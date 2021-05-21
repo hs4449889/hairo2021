@@ -12,16 +12,16 @@ hairo2021<br>
         ** __init__.py<br>
         ** PS4_class.py<br>
     <br>
-    * Motor
-        ** __init__.py
-        ** PWM_class.py
+    * Motor<br>
+        ** __init__.py<br>
+        ** PWM_class.py<br>
     <br>
-    * Sensor
-        ** __init__.py
-        ** INFRA_RED_class.py
-        ** URTLA_SONIC_class.py
+    * Sensor<br>
+        ** __init__.py<br>
+        ** INFRA_RED_class.py<br>
+        ** URTLA_SONIC_class.py<br>
     
-    * main.py
+    * main.py<br>
 
 # 各ライブラリの説明
 
