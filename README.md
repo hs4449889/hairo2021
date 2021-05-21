@@ -7,21 +7,21 @@ raspberrpiでロボット制御をする際に使うライブラリ
 main.pyやmain.ipynbで実際に使ったりするための
 開発用リポジトリです
 <br>
-*hairo2021
-    *Controller
-        *__init__.py
-        *PS4_class.py
+* hairo2021
+    * Controller
+        * __init__.py
+        * PS4_class.py
     <br>
-    *Motor
-        *__init__.py
-        *PWM_class.py
+    * Motor
+        * __init__.py
+        * PWM_class.py
     <br>
-    *Sensor
-        *__init__.py
-        *INFRA_RED_class.py
-        *URTLA_SONIC_class.py
+    * Sensor
+        * __init__.py
+        * INFRA_RED_class.py
+        * URTLA_SONIC_class.py
     
-    *main.py
+    * main.py
 
 # 各ライブラリの説明
 
