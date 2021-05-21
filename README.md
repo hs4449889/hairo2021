@@ -13,13 +13,13 @@ hairo2021<br>
         ** PS4_class.py<br>
     <br>
     * Motor
-        * __init__.py
-        * PWM_class.py
+        ** __init__.py
+        ** PWM_class.py
     <br>
     * Sensor
-        * __init__.py
-        * INFRA_RED_class.py
-        * URTLA_SONIC_class.py
+        ** __init__.py
+        ** INFRA_RED_class.py
+        ** URTLA_SONIC_class.py
     
     * main.py
 
