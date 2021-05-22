@@ -20,8 +20,6 @@ hairo2021<br>
         ** __init__.py<br>
         ** INFRA_RED_class.py<br>
         ** URTLA_SONIC_class.py<br>
-    
-    * main.py<br>
 
 # 各ライブラリの説明
 
