@@ -2,9 +2,9 @@
 import RPi.GPIO as GPIO
 import time
 
-class URTRA_SONIC_SENSOR(sense_pin =17,read_pin = 27):
+class URTRA_SONIC_SENSOR:
     #GPIO pin setup
-    def __init__(self,sense_pin,read_pin):
+    def __init__(self,sense_pin = 17,read_pin = 27):
         self.sense_pin = sense_pin
         self.read_pin = read_pin
         
