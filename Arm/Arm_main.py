@@ -2,6 +2,7 @@
 import arm_inverse
 import realsense
 import struct
+import math
 from timeout_decorator import timeout, TimeoutError
 
 # unit
@@ -14,6 +15,10 @@ class AutoArm:
         # settings
         self.arm        = arm_inverse.ARMS([400, 400, 100], [10, 160, -80])
         self.corner_xyz = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+
+        # must_adjust
+        self.PEN_WIDTH  = 20
+
     
     def get_corner(self):
         self.realsense  = realsense.REALSENSE([1280, 720], 15)
@@ -28,3 +33,11 @@ class AutoArm:
                 self.corner_xyz[_count][2] = realsense.depth * 1000
                 count += 1
         self.realsense.pipeline.stop()
+
+    def get_draw_route(self):
+        # consider_y_axis
+        area_height = abs(self.corner_xyz[0][1] - self.corner_xyz[1][1])
+        self.steps  = math.floor(area_height / self.PEN_WIDTH)
+
+        # consider_x_axis
+        
