@@ -54,6 +54,9 @@ class ARMS:
         self.sca = self.det / self.div
 
     def Moving(self):
+        # angles_trainsition (to return)
+        self.angles_trainsition = []
+
         for D in range(1, self.div+1, 1):
             # target_rads
             target = self.fst_place + self.sca*D
@@ -76,14 +79,26 @@ class ARMS:
             # now_place
             self.place = self.Rad_to_Place(self.angle)
 
-            # print(move)
+            # radians_to_degree
             _degs = self.Degree_to_Radian(self.angle, False, True)
             _posi = self.Degree_to_Radian(self.place, False, False)
+            
+            # change_range -180 ~ 180
             _degs_180 = []
             for _i in _degs:
                 if _i%360 <= 180: _degs_180.append(_i%360)
                 else:             _degs_180.append(_i%360-360)
+            
+            # append_to_return
+            self.angles_trainsition.append(_degs_180)
+
+            # print
             print(self.prints.format(D, _degs_180[0], _degs_180[1], _degs_180[2], _posi[0], _posi[1], _posi[2]%360))
+        
+        # list_to_NpData
+        self.angles_trainsition = np.array(self.angles_trainsition)
+
+        # reset_start_position
         self.first_angle = self.angle
 
 
@@ -126,3 +141,5 @@ while True:
 
     # 計算を実行( .Moving()) ※引数はなし
     arms.Moving()
+
+    print(arms.angles_trainsition)
