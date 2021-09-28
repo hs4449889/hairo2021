@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time 
 
-class DC_MOTOR:
+class DcMotor:
     def __init__(self,pwm_pin = 19,dir_pin = 26):
         
         self.pwm_pin = pwm_pin
@@ -17,7 +17,7 @@ class DC_MOTOR:
         GPIO.setup(self.dir_pin,GPIO.OUT)
         GPIO.output(self.dir_pin,True)
         
-    def Rotation(self,Direction = True,Rotation_Speed = 100):
+    def rotation(self,Direction = True,Rotation_Speed = 100):
         GPIO.output(self.dir_pin,Direction)
         self.pwm_pin.ChangeDutyCycle(Rotation_Speed)
         

@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 #INFRA RED class 
-class INFRA_RED_SENSOR:
+class InfraRedSensor:
     #GPIO pin setup
     def __init__(self,sense_pin = 14):
         self.sense_pin = sense_pin
