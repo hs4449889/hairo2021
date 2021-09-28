@@ -19,7 +19,6 @@ class AutoArm:
         # must_adjust
         self.PEN_WIDTH  = 20
 
-    
     def get_corner(self):
         self.realsense  = realsense.REALSENSE([1280, 720], 15)
         _count = 0
@@ -39,5 +38,12 @@ class AutoArm:
         area_height = abs(self.corner_xyz[0][1] - self.corner_xyz[1][1])
         self.steps  = math.floor(area_height / self.PEN_WIDTH)
 
-        # consider_x_axis
-        
+        # consider_x_axis(first_route)
+        self.arm.Setting([self.corner_xyz[0][0], self.corner_xyz[0][2]])
+        self.arm.Moving()
+        self.angles_transition_first = self.arm.angles_transition.T
+
+        # consider_x_axis(normal_route)
+        self.arm.Setting([self.corner_xyz[1][0], self.corner_xyz[1][2]])
+        self.arm.Moving()
+        self.angles_transition_normal =  self.arm.angles_transition.T
