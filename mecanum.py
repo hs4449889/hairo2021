@@ -21,7 +21,7 @@ sensor = sonic.ULTRA_SONIC_SENSOR(16, 18)
 
 # set_num
 t, value, code, index = 0, 0, 0, 0
-i0, i1, i3, i4 = 0, 0, 0, 0
+value_index0, value_index1, value_index3, value_index4 = 0, 0, 0, 0
 mecanum = [-1, -1, -1, -1]    # FL, FR, RL, RR
 count = 0
 lock = 0
@@ -54,53 +54,53 @@ def Mecanum():
         print("{:6d}_short_length".format(count))
         mecanum = [-1, -1, -1, -1]
 
-    elif i3 == -32767 and abs(i4)<6000:
+    elif value_index3 == -32767 and abs(value_index4)<6000:
         # left
         print("{:6d}_{:3d}".format(count, 180))
         mecanum = [0, 1, 1, 0]
-    elif i3 == 32767 and abs(i4)<6000:
+    elif value_index3 == 32767 and abs(value_index4)<6000:
         # right
         print("{:6d}_{:3d}".format(count, 0))
         mecanum = [1, 0, 0, 1]
-    elif i4 == -32767 and abs(i3)<6000:
+    elif value_index4 == -32767 and abs(value_index3)<6000:
         # flont
         print("{:6d}_{:3d}".format(count, 90))
         mecanum = [1, 1, 1, 1]
-    elif i4 == 32767 and abs(i3)<6000:
+    elif value_index4 == 32767 and abs(value_index3)<6000:
         # back
         print("{:6d}_{:3d}".format(count, 270))
         mecanum = [0, 0, 0, 0]
     
-    elif i3<0 and i4<0 and math.sqrt(i3**2+i4**2)>30000:
+    elif value_index3<0 and value_index4<0 and math.sqrt(value_index3**2+value_index4**2)>30000:
         # flont_left
         print("{:6d}_{:3d}".format(count, 135))
         mecanum = [-1, 1, 1, -1]
-    elif i3>0 and i4>0 and math.sqrt(i3**2+i4**2)>30000:
+    elif value_index3>0 and value_index4>0 and math.sqrt(value_index3**2+value_index4**2)>30000:
         # back_right
         print("{:6d}_{:3d}".format(count, 315))
         mecanum = [-1, 0, 0, -1]
-    elif i3<0 and i4>0 and math.sqrt(i3**2+i4**2)>30000:
+    elif value_index3<0 and value_index4>0 and math.sqrt(value_index3**2+value_index4**2)>30000:
         # back_left
         print("{:6d}_{:3d}".format(count, 225))
         mecanum = [0, -1, -1, 0]
-    elif i3>0 and i4<0 and math.sqrt(i3**2+i4**2)>30000:
+    elif value_index3>0 and value_index4<0 and math.sqrt(value_index3**2+value_index4**2)>30000:
         # front_right
         print("{:6d}_{:3d}".format(count, 45))
         mecanum = [1, -1, -1, 1]
 
-    elif i0<0 and i1<0 and math.sqrt(i0**2+i1**2)>30000:
+    elif value_index0<0 and value_index1<0 and math.sqrt(value_index0**2+value_index1**2)>30000:
         # flont_left
         print("{:6d}_{:3d}".format(count, 135))
         mecanum = [-1, 1, -1, 1]
-    elif i0>0 and i1>0 and math.sqrt(i0**2+i1**2)>30000:
+    elif value_index0>0 and value_index1>0 and math.sqrt(value_index0**2+value_index1**2)>30000:
         # back_right
         print("{:6d}_{:3d}".format(count, 315))
         mecanum = [1, 0, 1, 0]
-    elif i0<0 and i1>0 and math.sqrt(i0**2+i1**2)>30000:
+    elif value_index0<0 and value_index1>0 and math.sqrt(value_index0**2+value_index1**2)>30000:
         # back_left
         print("{:6d}_{:3d}".format(count, 225))
         mecanum = [0, 1, 0, 1]
-    elif i0>0 and i1<0 and math.sqrt(i0**2+i1**2)>30000:
+    elif value_index0>0 and value_index1<0 and math.sqrt(value_index0**2+value_index1**2)>30000:
         # front_right
         print("{:6d}_{:3d}".format(count, 45))
         mecanum = [1, -1, 1, -1]
@@ -130,20 +130,43 @@ with open("/dev/input/js0", "rb") as f:
             # sensing
             length = seosor.Sense_Ultra_Sonic()
 
+            ##################################################################### ロックについて #################################################################
+
+            # ロックの仕組み
+            #   (1) lock変数 = length が短くなったらロックを掛ける    lock=1 : locked   / lock=0 : unlocked
+            #   (2) unlc変数 = Share & Option同時押しでロックを掛ける unlc=1 : unlocked / unlc=0 : locked or unlocked
+            #   ※権限の強さ unlc > lock  lock=1でも、unlc=1である場合、ロックは解除される 
+
             # lock
+            # 壁から15cm未満でロックが掛る
             if length < 15:                         lock = 1
             elif lock==0 and unlc==1 and length>18: unlc = 0
             else:                                   lock = 0
             
             # unlock
+            # Share & Option ==> ロックを解除
             if (value_==1 and code_==1 and value==1 and code==1) and ((index_==8 and index==9) or (index_==9 and index==8)):
                 unlc = 1
                 print("unlocked")
 
-            # foward
-            if   index==0 and code==2: i0 = value
-            elif index==1 and code==2: i1 = value
-            elif index==3 and code==2: i3 = value
-            elif index==4 and code==2: i4 = value
-            count += 1
+            ####################################################### ここまではメインにあった方がいいと思われる #####################################################
+
+            # save_value
+            # 2つのValueを同時に保存できないため、indexごとにvalueを管理
+            # これに関してはクラスの中に入れてもいいかもしれない
+            if   index==0 and code==2: value_index0 = value
+            elif index==1 and code==2: value_index1 = value
+            elif index==3 and code==2: value_index3 = value
+            elif index==4 and code==2: value_index4 = value
+
+            ################################################################### メインで呼び出す #################################################################
+
+            # forward
+            # Mecanum関数がすること
+            #   4つのindexごとのvalueから、どのメカナムをどの方向に回すかを判断
+            #   指定された方向に移動する
             Mecanum()
+
+            # debug
+            # コード進行状況確認用
+            count += 1
