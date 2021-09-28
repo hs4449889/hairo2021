@@ -13,6 +13,10 @@ class REALSENSE:
         self.pipeline = rs.pipeline()
         self.config = rs.config()
 
+        # Align
+        self.align_to = rs.stream.color
+        self.align = rs.align(self.align_to)
+
         # Get device product line for setting a supporting resolution
         self.pipeline_wrapper = rs.pipeline_wrapper(self.pipeline)
         self.pipeline_profile = self.config.resolve(self.pipeline_wrapper)
@@ -38,13 +42,15 @@ class REALSENSE:
             self.depth = self.depth_frame.get_distance(_x, _y)
             self.x = _x
             self.y = _y
+            self.world_point = rs.rs2_deproject_pixel_to_point(self.color_intrinsics, [_x, _y], self.depth)
 
     def Get_Frame(self):
         try:
             # Wait for a coherent pair of frames: depth and color
             self.frames = self.pipeline.wait_for_frames()
-            self.depth_frame = self.frames.get_depth_frame()
-            self.color_frame = self.frames.get_color_frame()
+            self.aligned_frames = self.align.process(self.frames)
+            self.depth_frame = self.aligned_frames.get_depth_frame()
+            self.color_frame = self.aligned_frames.get_color_frame()
             self.depth = 0
             if not self.depth_frame or not self.color_frame:
                 1/0
@@ -58,6 +64,7 @@ class REALSENSE:
 
             self.depth_colormap_dim = self.depth_colormap.shape
             self.color_colormap_dim = self.color_image.shape
+            self.color_intrinsics = self.color_frame.profile.as_video_stream_profile().intrinsics
 
             # If depth and color resolutions are different, resize color image to match depth image for display
             if self.depth_colormap_dim != self.color_colormap_dim:
@@ -74,12 +81,22 @@ class REALSENSE:
         except ZeroDivisionError:
             pass
 
+
+####################################################### Setting #####################################################
+# 初期化
+# args : ([picture_wide, picture_height], FPS)
 realsense = REALSENSE([640, 480], 15)
 
 while True:
     try:
+        # 画像を取得&距離データを計算(引数なし)
         realsense.Get_Frame()
+
+        # 取得できる距離データ
+        #   画像上の座標 = 横:   .x  /  縦:   .y
+        #   現実の座標   = 左右: .world_point[0]  /  上下: .world_point[1]  /  奥行: .depth   ※単位ｍ
+
         if realsense.depth != 0:
-            print("RealSense_Depth  >>>  X: {:3d}, Y: {:3d}, D: {:5.1f}".format(realsense.x, realsense.y, realsense.depth*100))
+            print("RealSense_Depth  >>>  X: {:3d}, Y: {:3d}, Dcm: {:5.1f}, Xcm: {:5.1f}, Ycm: {:5.1f}".format(realsense.x, realsense.y, realsense.depth*100, realsense.world_point[0]*100, realsense.world_point[1]*100))
     except KeyboardInterrupt:
         realsense.pipeline.stop()
