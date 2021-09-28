@@ -2,7 +2,7 @@
 import RPi.GPIO as GPIO
 import time 
 
-class DC_MOTOR:
+class DcMotor:
     def __init__(self,pwm_pin = 19,dir_pin = 26):
         
         self.pwm_pin = pwm_pin
