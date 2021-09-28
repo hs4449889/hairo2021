@@ -1,4 +1,3 @@
-#コピペ、手直し前
 import subprocess
 
 class UsbVideoDevice():

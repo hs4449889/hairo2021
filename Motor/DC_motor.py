@@ -17,7 +17,7 @@ class DcMotor:
         GPIO.setup(self.dir_pin,GPIO.OUT)
         GPIO.output(self.dir_pin,True)
         
-    def Rotation(self,Direction = True,Rotation_Speed = 100):
+    def rotation(self,Direction = True,Rotation_Speed = 100):
         GPIO.output(self.dir_pin,Direction)
         self.pwm_pin.ChangeDutyCycle(Rotation_Speed)
         
