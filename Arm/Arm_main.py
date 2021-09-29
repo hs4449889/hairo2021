@@ -3,6 +3,7 @@ import arm_inverse
 import realsense
 import struct
 import math
+import numpy as np
 from timeout_decorator import timeout, TimeoutError
 
 # unit
@@ -18,6 +19,12 @@ class AutoArm:
 
         # must_adjust
         self.PEN_WIDTH  = 20
+        self.MAX_PULTH  = 2500
+        self.MIN_PULTH  = 500
+
+    def deg_to_pulth(self, x):
+        _pulths = (x+180)*(MAX-MIN)/360
+        return _pulths
 
     def get_corner(self):
         self.realsense  = realsense.REALSENSE([1280, 720], 15)
@@ -41,9 +48,11 @@ class AutoArm:
         # consider_x_axis(first_route)
         self.arm.Setting([self.corner_xyz[0][0], self.corner_xyz[0][2]])
         self.arm.Moving()
-        self.angles_transition_first = self.arm.angles_transition.T
+        self.angles_transition_first = self.deg_to_pulth(self.arm.angles_transition.T)
 
         # consider_x_axis(normal_route)
         self.arm.Setting([self.corner_xyz[1][0], self.corner_xyz[1][2]])
         self.arm.Moving()
-        self.angles_transition_normal =  self.arm.angles_transition.T
+        self.angles_transition_normal =  self.deg_to_pulth(self.arm.angles_transition.T)
+
+        
