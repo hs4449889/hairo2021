@@ -53,7 +53,7 @@ class Arms:
         self.det = self.end_place - self.fst_place
         self.sca = self.det / self.div
 
-    def Moving(self):
+    def moving(self):
         # angles_trainsition (to return)
         self.angles_trainsition = []
 
