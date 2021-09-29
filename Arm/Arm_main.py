@@ -68,5 +68,14 @@ class AutoArm:
         self.arm.Moving()
         self.angles_transition_normal =  self.deg_to_pulth(self.arm.angles_transition)
 
-    def moving_side(self):
-        for _i in 
+    def select_route_x(self, mode, direction=-1):
+        # mode       : fisrt_move = 0 / normal_mode = 1
+        # direction  : left = 0       / right = 1
+
+        # set_route
+        if   mode==0:
+            self.next_route = self.angles_transition_first
+        elif direction==1:
+            self.next_route = self.angles_transition_normal
+        else:
+            self.next_route = np.flipud(self.angles_transition_normal)
