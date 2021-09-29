@@ -61,10 +61,12 @@ class AutoArm:
         # consider_x_axis(first_route)
         self.arm.Setting([self.corner_xyz[0][0], self.corner_xyz[0][2]])
         self.arm.Moving()
-        self.angles_transition_first = self.deg_to_pulth(self.arm.angles_transition.T)
+        self.angles_transition_first = self.deg_to_pulth(self.arm.angles_transition)
 
         # consider_x_axis(normal_route)
         self.arm.Setting([self.corner_xyz[1][0], self.corner_xyz[1][2]])
         self.arm.Moving()
-        self.angles_transition_normal =  self.deg_to_pulth(self.arm.angles_transition.T)
+        self.angles_transition_normal =  self.deg_to_pulth(self.arm.angles_transition)
 
+    def moving_side(self):
+        for _i in 
