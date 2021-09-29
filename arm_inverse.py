@@ -2,16 +2,16 @@
 from math import degrees, radians, sin, cos
 import numpy as np
 
-class ARMS:
+class Arms:
     def __init__(self, links, fst_angle, Div=100):
         # Unit of angles are 'Degree'
         # enter array, not ndarray
         self.links = np.array(links)                                    # each_length [len(3)]
-        self.fst_angle = self.Degree_to_Radian(fst_angle, True, True)   # [th1, th2, th3] ==> ndarray(Rads)
+        self.fst_angle = self.degree_to_radian(fst_angle, True, True)   # [th1, th2, th3] ==> ndarray(Rads)
         self.div = Div                                                  # consider_times
         self.prints = "time: {:3d}, th1: {:6.1f}, th2: {:6.1f}, th3: {:6.1f}, x: {:6.2f}, y: {:6.2f}, a: {:6.1f}"
 
-    def Degree_to_Radian(self, _array, Dir, Type):
+    def degree_to_radian(self, _array, Dir, Type):
         # if Deg ==> Rad  : True   # if Rad ==> Deg  : False
         # if Type==> Angle: True   # if Type==> place: False
         # return angle or place array
@@ -29,23 +29,23 @@ class ARMS:
             _changed[2] = degrees(_changed[2])
         return _changed
 
-    def Rad_to_SumRad(self, _Rads):
+    def rad_to_sum_rad(self, _Rads):
         _array = np.empty(3)
         for _w in range(3):  _array[_w] = sum(_Rads[:_w+1])
         self.sum_angles = _array
     
-    def Rad_to_Place(self, _Rads):
-        self.Rad_to_SumRad(_Rads)
+    def rad_to_place(self, _Rads):
+        self.rad_to_sum_rad(_Rads)
         _x = self.links[0]*cos(self.sum_angles[0]) + self.links[1]*cos(self.sum_angles[1]) + self.links[2]*cos(self.sum_angles[2])
         _y = self.links[0]*sin(self.sum_angles[0]) + self.links[1]*sin(self.sum_angles[1]) + self.links[2]*sin(self.sum_angles[2])
         _a = self.sum_angles[2]
         return np.array([_x, _y, _a])
 
-    def Setting(self, end_place):
+    def setting(self, end_place):
         # goal
-        self.end_place = self.Degree_to_Radian(end_place, True, False)  # [x, y, a] ========> ndarray(Place)
+        self.end_place = self.degree_to_radian(end_place, True, False)  # [x, y, a] ========> ndarray(Place)
         # first_place
-        self.fst_place = self.Rad_to_Place(self.fst_angle)
+        self.fst_place = self.rad_to_place(self.fst_angle)
         # now_position
         self.place = self.fst_place
         self.angle = self.fst_angle
@@ -74,14 +74,14 @@ class ARMS:
             inv_J = np.linalg.inv(J)
             det_angle = inv_J @ change_amount
             self.angle += det_angle
-            self.Rad_to_SumRad(self.angle)
+            self.rad_to_sum_rad(self.angle)
 
             # now_place
-            self.place = self.Rad_to_Place(self.angle)
+            self.place = self.rad_to_place(self.angle)
 
             # radians_to_degree
-            _degs = self.Degree_to_Radian(self.angle, False, True)
-            _posi = self.Degree_to_Radian(self.place, False, False)
+            _degs = self.degree_to_radian(self.angle, False, True)
+            _posi = self.degree_to_radian(self.place, False, False)
             
             # change_range -180 ~ 180
             _degs_180 = []
@@ -104,7 +104,7 @@ class ARMS:
 
 
 
-
+"""
 ############################################################# test #############################################################
 
 # link_setting
@@ -143,3 +143,4 @@ while True:
     arms.Moving()
 
     print(arms.angles_trainsition)
+"""
