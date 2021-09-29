@@ -3,6 +3,7 @@ import arm_inverse
 import realsense
 import struct
 import math
+import time
 import numpy as np
 import pigpio
 from timeout_decorator import timeout, TimeoutError
@@ -79,3 +80,12 @@ class AutoArm:
             self.next_route = self.angles_transition_normal
         else:
             self.next_route = np.flipud(self.angles_transition_normal)
+
+    def moving_x_axis(self, sleep=16):
+        sleep = sleep / self.next_route.shape[0]
+        for _i in self.next_route:
+            self.servo_moving(_i)
+            time.sleep(sleep)
+
+    def moving_y_axis(self, sleep=0.5):
+        # self.stepping_moving()
