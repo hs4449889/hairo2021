@@ -70,12 +70,14 @@ class AutoArm:
         self.angles_transition_normal =  self.deg_to_pulth(self.arm.angles_transition)
 
     def select_route_x(self, mode, direction=-1):
-        # mode       : fisrt_move = 0 / normal_mode = 1
-        # direction  : left = 0       / right = 1
+        # mode       : fisrt_move = 0 / normal_mode = 1 / end_mode = 2
+        # direction  : left = 1       / right = 0
 
         # set_route
         if   mode==0:
             self.next_route = self.angles_transition_first
+        elif mode==2:
+            self.next_route = np.flipud(self.angles_transition_first)
         elif direction==1:
             self.next_route = self.angles_transition_normal
         else:
@@ -89,3 +91,31 @@ class AutoArm:
 
     def moving_y_axis(self, sleep=0.5):
         # self.stepping_moving()
+        print('turning_stepping')
+
+    def auto_moving(self):
+        # consider_route
+        self.get_corner()
+        self.get_draw_route()
+
+        # get_first_position
+        self.moving_y_axis(4)
+        self.select_route_x(0)
+        self.moving_x_axis(8)
+        
+        # drawing
+        for _i in range(self.steps):
+            self.select_route_x(1, _i%2)
+            self.moving_x_axis()
+            if _i!=self.steps-1:
+                self.moving_y_axis()
+        
+        # return_position_x
+        if self.steps%2!=0:
+            self.select_route_x(1, _i%2)
+            self.moving_x_axis()
+        
+        # return_first_position
+        self.select_route_x(2)
+        self.moving_x_axis(8)
+        self.moving_y_axis(4)
