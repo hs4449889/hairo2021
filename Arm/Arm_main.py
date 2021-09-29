@@ -40,6 +40,10 @@ class AutoArm:
         self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[1])
         self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[2])
 
+    def stepping_moving(self, pulth):
+        # test
+        print('a')
+
     def get_corner(self):
         self.realsense  = realsense.REALSENSE([1280, 720], 15)
         _count = 0
@@ -90,8 +94,7 @@ class AutoArm:
             time.sleep(sleep)
 
     def moving_y_axis(self, sleep=0.5):
-        # self.stepping_moving()
-        print('turning_stepping')
+        self.stepping_moving()
 
     def auto_moving(self):
         # consider_route
