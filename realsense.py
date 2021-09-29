@@ -3,7 +3,7 @@ import pyrealsense2.pyrealsense2 as rs
 import numpy as np
 import cv2
 
-class REALSENSE:
+class ReaSense:
     def __init__(self, frame_size, frame_rate):
         # set_frame
         self.frame_size = frame_size
