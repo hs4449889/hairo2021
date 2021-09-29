@@ -4,6 +4,7 @@ import realsense
 import struct
 import math
 import numpy as np
+import pigpio
 from timeout_decorator import timeout, TimeoutError
 
 # unit
@@ -14,8 +15,14 @@ from timeout_decorator import timeout, TimeoutError
 class AutoArm:
     def __init__(self):
         # settings
+        self.pi         = pigpio.pi()
         self.arm        = arm_inverse.ARMS([400, 400, 100], [10, 160, -80])
         self.corner_xyz = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+
+        # arm_pins
+        self.angle_pin1 = 14
+        self.angle_pin2 = 15
+        self.angle_pin3 = 16
 
         # must_adjust
         self.PEN_WIDTH  = 20
@@ -25,6 +32,12 @@ class AutoArm:
     def deg_to_pulth(self, x):
         _pulths = (x+180)*(MAX-MIN)/360
         return _pulths
+
+    def servo_moving(self, pulth):
+        # pulth = [theta1_pulth, theta2_pulth, theta3_pulth]
+        self.pi.set_servo_pulthwidth(self.angle_pin1, pulth[0])
+        self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[1])
+        self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[2])
 
     def get_corner(self):
         self.realsense  = realsense.REALSENSE([1280, 720], 15)
@@ -55,4 +68,3 @@ class AutoArm:
         self.arm.Moving()
         self.angles_transition_normal =  self.deg_to_pulth(self.arm.angles_transition.T)
 
-        
