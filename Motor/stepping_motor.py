@@ -40,4 +40,15 @@ class Stepping_Moter:
         GPIO.output(self.coil_2, steps[2])
         GPIO.output(self.coil_3, steps[3])
     
-    
+    def forward(self, sleep_time, step_time, direction):
+        if direction==1:
+            for _i in range(step_time):
+                for _j in self.default_steps:
+                    self.move_step(_j)
+                    time.sleep(sleep_time)
+        elif direction==0:
+            for _i in range(step_time):
+                for _j in reversed(self.default_steps):
+                    self.move_step(_j)
+                    time.sleep(sleep_time)
+        self.move_step(self.stop_steps)
