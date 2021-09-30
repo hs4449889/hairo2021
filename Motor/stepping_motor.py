@@ -33,3 +33,11 @@ class Stepping_Moter:
             [0,0,0,1]
         ]
         self.stop_steps = [0, 0, 0, 0]
+
+    def move_step(self, steps):
+        GPIO.output(self.coil_0, steps[0])
+        GPIO.output(self.coil_1, steps[1])
+        GPIO.output(self.coil_2, steps[2])
+        GPIO.output(self.coil_3, steps[3])
+    
+    
