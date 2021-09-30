@@ -52,3 +52,18 @@ class Stepping_Moter:
                     self.move_step(_j)
                     time.sleep(sleep_time)
         self.move_step(self.stop_steps)
+
+# main / 定義
+stepping = Stepping_Moter()
+
+while True:
+    # mode
+    print("time = ")
+    sleep = float(input())
+    print("dire = ")
+    dire  = int(input())
+    print("step = ")
+    steps = int(input())
+
+    # turning / 回転
+    stepping.forward(sleep, steps, dire)
