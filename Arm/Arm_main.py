@@ -40,10 +40,13 @@ class AutoArm:
         self.angle_pin2 = 15
         self.angle_pin3 = 16
 
-        # must_adjust
+        # must_adjust_Servo
         self.PEN_WIDTH  = 20
         self.MAX_PULTH  = 2500
         self.MIN_PULTH  = 500
+
+        # must_adjust_Stepping
+        self.STEP_MM    = 16    # N_steps is needed to move 1mm.
 
     def deg_to_pulth(self, x):
         _pulths = (x+180)*(MAX-MIN)/360
