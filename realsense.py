@@ -3,7 +3,7 @@ import pyrealsense2.pyrealsense2 as rs
 import numpy as np
 import cv2
 
-class REALSENSE:
+class ReaSense:
     def __init__(self, frame_size, frame_rate):
         # set_frame
         self.frame_size = frame_size
@@ -37,14 +37,14 @@ class REALSENSE:
         # start_streaming
         self.pipeline.start(self.config)
 
-    def On_Mouse(self, event, _x, _y, flags, params):
+    def on_mouse(self, event, _x, _y, flags, params):
         if event == cv2.EVENT_LBUTTONDOWN:
             self.depth = self.depth_frame.get_distance(_x, _y)
             self.x = _x
             self.y = _y
             self.world_point = rs.rs2_deproject_pixel_to_point(self.color_intrinsics, [_x, _y], self.depth)
 
-    def Get_Frame(self):
+    def get_frame(self):
         try:
             # Wait for a coherent pair of frames: depth and color
             self.frames = self.pipeline.wait_for_frames()
@@ -76,12 +76,12 @@ class REALSENSE:
             # Show images
             cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
             cv2.imshow('RealSense', self.images)
-            cv2.setMouseCallback('RealSense', self.On_Mouse)
+            cv2.setMouseCallback('RealSense', self.on_mouse)
             cv2.waitKey(1)
         except ZeroDivisionError:
             pass
 
-
+"""
 ####################################################### Setting #####################################################
 # 初期化
 # args : ([picture_wide, picture_height], FPS)
@@ -100,3 +100,4 @@ while True:
             print("RealSense_Depth  >>>  X: {:3d}, Y: {:3d}, Dcm: {:5.1f}, Xcm: {:5.1f}, Ycm: {:5.1f}".format(realsense.x, realsense.y, realsense.depth*100, realsense.world_point[0]*100, realsense.world_point[1]*100))
     except KeyboardInterrupt:
         realsense.pipeline.stop()
+"""
