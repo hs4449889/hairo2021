@@ -61,14 +61,11 @@ class AutoArm:
         self.arm    = arm_inverse.Arms(self.link_length, self.first_angle)
 
     def deg_to_pulth(self, x):
-        _pulths = (x+180)*(MAX-MIN)/360
-        return _pulths
+        return (x+180)*(self.MAX_PULTH-self.MIN_PULTH)/360
 
-    def servo_moving(self, pulth):
-        # pulth = [theta1_pulth, theta2_pulth, theta3_pulth]
-        self.pi.set_servo_pulthwidth(self.angle_pin1, pulth[0])
-        self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[1])
-        self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[2])
+    def servo_moving(self, pulths):
+        for _x, _pulth in enumerate(pulths):
+            self.pi.set_servo_pulthwidth(self.angle_pins[_x], _pulth)
 
     def get_corner(self):
         self.realsense  = realsense.REALSENSE([1280, 720], 15)
