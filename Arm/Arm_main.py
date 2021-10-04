@@ -13,16 +13,16 @@
 #       B: 横方向が点Bのラインにいるときは高さ変更を行わず、点Aのラインに戻る
 #  (11) (2)を逆からFor文で回し、反対の動きで初期位置に戻る
 
-# import
+# import_original
 import arm_inverse
 import realsense
-import struct
-import math
+from Motor import stepping_motor
+
+# import_default
 import time
+import math
 import numpy as np
 import pigpio
-from timeout_decorator import timeout, TimeoutError
-from Motor import stepping_motor
 
 # unit
 #   angle  = degree
