@@ -121,14 +121,11 @@ class AutoArm:
             self.servo_moving(_pulth)
             time.sleep(_sleep)
 
-    def moving_y_axis(self, sleep, steps, direction=-1):
-        # calcurate_sleep_time
-        sleep = sleep / (steps * 8)
-        # consider_direction / steps < 0 === up(1) / steps > 0 === down(0)
-        if direction == -1:
-            if steps > 0:   direction = 0
-            else:           direction = 1
-        self.stepping.forward(0.001, steps, direction)
+    def moving_y_axis(self, sleep, steps, direction=1):
+        # calculate_sleep_time
+        _sleep = sleep / (steps*8)
+        # moving_step_motor
+        self.stepping.forward(_sleep, steps, direction)
 
     def auto_moving(self):
         # consider_route
