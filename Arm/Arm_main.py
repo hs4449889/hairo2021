@@ -68,17 +68,23 @@ class AutoArm:
             self.pi.set_servo_pulthwidth(self.angle_pins[_x], _pulth)
 
     def get_corner(self):
-        self.realsense  = realsense.REALSENSE([1280, 720], 15)
+        # setting_realsense
+        self.realsense  = realsense.RealSense([1280, 720], 15)
+        self.corner_xyz = np.array([self.OR_VECTOR, self.OR_VECTOR])
         _count = 0
-        while _count<2:
-            # take_pictures
-            self.realsense.Get_Frame()
-            # if_clicked, return_positions
+
+        # if_clicked, return_positions
+        while _count < 2:
+            # take_picture
+            self.realsense.get_frame()
+            # return_position
             if realsense.depth != 0:
-                self.corner_xyz[_count][0] = realsense.world_point[0] * 1000
-                self.corner_xyz[_count][1] = realsense.world_point[1] * 1000
-                self.corner_xyz[_count][2] = realsense.depth * 1000
-                count += 1
+                self.corner_xyz[_count][0] += realsense.world_point[0] * 1000
+                self.corner_xyz[_count][1] += realsense.world_point[1] * 1000
+                self.corner_xyz[_count][2] += realsense.depth * 1000
+                _count += 1
+        
+        # stop_taking_picture
         self.realsense.pipeline.stop()
 
     def get_draw_route(self):
