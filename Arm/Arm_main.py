@@ -22,6 +22,7 @@ import time
 import numpy as np
 import pigpio
 from timeout_decorator import timeout, TimeoutError
+from Motor import stepping_motor
 
 # unit
 #   angle  = degree
@@ -40,13 +41,22 @@ class AutoArm:
         self.angle_pin2 = 15
         self.angle_pin3 = 16
 
+        # arm_default_positions (O = camera)
+        self.default_x = 0
+        self.default_y = -200
+        self.default_z = 0
+
         # must_adjust_Servo
         self.PEN_WIDTH  = 20
         self.MAX_PULTH  = 2500
         self.MIN_PULTH  = 500
 
+        # stepping_motor
+        self.stepping   = stepping_motor.Stepping_Moter(coil_0=6, coil_1=13, coil_2=19, coil_3=26)
+        
         # must_adjust_Stepping
         self.STEP_MM    = 16    # N_steps is needed to move 1mm.
+        self.ONE_PART   = self.PEN_WIDTH * self.STEP_MM
 
     def deg_to_pulth(self, x):
         _pulths = (x+180)*(MAX-MIN)/360
@@ -57,10 +67,6 @@ class AutoArm:
         self.pi.set_servo_pulthwidth(self.angle_pin1, pulth[0])
         self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[1])
         self.pi.set_servo_pulthwidth(self.angle_pin2, pulth[2])
-
-    def stepping_moving(self, pulth):
-        # test
-        print('a')
 
     def get_corner(self):
         self.realsense  = realsense.REALSENSE([1280, 720], 15)
@@ -111,8 +117,14 @@ class AutoArm:
             self.servo_moving(_i)
             time.sleep(sleep)
 
-    def moving_y_axis(self, sleep=0.5):
-        self.stepping_moving()
+    def moving_y_axis(self, sleep, steps, direction=-1):
+        # calcurate_sleep_time
+        sleep = sleep / (steps * 8)
+        # consider_direction / steps < 0 === up(1) / steps > 0 === down(0)
+        if direction == -1:
+            if steps > 0:   direction = 0
+            else:           direction = 1
+        self.stepping.forward(0.001, steps, direction)
 
     def auto_moving(self):
         # consider_route
@@ -120,7 +132,8 @@ class AutoArm:
         self.get_draw_route()
 
         # get_first_position
-        self.moving_y_axis(4)
+        stepping = (self.corner_xyz[0][1]-self.default_y)*self.STEP_MM
+        self.moving_y_axis(sleep=4, steps=stepping)
         self.select_route_x(0)
         self.moving_x_axis(8)
         
@@ -129,14 +142,15 @@ class AutoArm:
             self.select_route_x(1, _i%2)
             self.moving_x_axis()
             if _i!=self.steps-1:
-                self.moving_y_axis()
+                self.moving_y_axis(sleep=0.5, steps=self.ONE_PART, direction=1)
         
         # return_position_x
         if self.steps%2!=0:
-            self.select_route_x(1, _i%2)
+            self.select_route_x(1, 1)
             self.moving_x_axis()
         
         # return_first_position
+        stepping = (self.corner_xyz[0][1] - self.default_y + (self.steps-1)*self.PEN_WIDTH) * self.STEP_MM
         self.select_route_x(2)
         self.moving_x_axis(8)
-        self.moving_y_axis(4)
+        self.moving_y_axis(sleep=4, steps=stepping)
