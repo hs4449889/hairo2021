@@ -15,14 +15,20 @@ class UltraSonicSensor:
     read_pin :
         echo用のpin番号を保持する
 
-    
-    
     """
     def __init__(self,sense_pin = 17,read_pin = 27):
         self.sense_pin = sense_pin
         self.read_pin = read_pin
         
     def sense_urtra_sonic(self):
+        """
+        センサーからの値を読み取る関数
+
+        Returns
+        -------
+        distance : float
+            読み取った距離を保持する変数
+        """
         GPIO.output(self.sense_pin,GPIO.LOW)
 
         time.sleep(0.3)
