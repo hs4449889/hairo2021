@@ -1,5 +1,5 @@
-from Sensor import ultra_sensor
-from Motor import dc_motor
+from Sensor import sonic
+from Motor import DC_motor
 from timeout_decorator import timeout, TimeoutError
 import RPi.GPIO as GPIO
 import time
@@ -11,13 +11,13 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
 # motor
-FL = dc_motor.DcMotor(pwm_pin = 27, dir_pin = 17)
-FR = dc_motor.DcMotor(pwm_pin = 14, dir_pin = 15)
-RL = dc_motor.DcMotor(pwm_pin = 26, dir_pin = 19)
-RR = dc_motor.DcMotor(pwm_pin = 20, dir_pin = 21)
+FL = DC_motor.DC_MOTOR(pwm_pin = 27, dir_pin = 17)
+FR = DC_motor.DC_MOTOR(pwm_pin = 14, dir_pin = 15)
+RL = DC_motor.DC_MOTOR(pwm_pin = 26, dir_pin = 19)
+RR = DC_motor.DC_MOTOR(pwm_pin = 20, dir_pin = 21)
 
 # sonic
-# ultra_sensor1 = ultra_sensor.UltraSonicSensor(sense_pin= 17,read_pin= 27)
+sensor = sonic.ULTRA_SONIC_SENSOR(16, 18)
 
 # set_num
 t, value, code, index = 0, 0, 0, 0
@@ -34,20 +34,20 @@ def reading():
     return t, value, code, index
 
 # moving_mecanum
-def mecanum_forward():
+def Mecanum_forward():
     # forward
-    if mecanum[0] != -1: FL.rotation(Direction=mecanum[0], Rotation_Speed=80)
-    if mecanum[1] != -1: FR.rotation(Direction=mecanum[1], Rotation_Speed=80)
-    if mecanum[2] != -1: RL.rotation(Direction=mecanum[2], Rotation_Speed=80)
-    if mecanum[3] != -1: RR.rotation(Direction=mecanum[3], Rotation_Speed=80)
+    if mecanum[0] != -1: FL.Rotation(Direction=mecanum[0], Rotation_Speed=80)
+    if mecanum[1] != -1: FR.Rotation(Direction=mecanum[1], Rotation_Speed=80)
+    if mecanum[2] != -1: RL.Rotation(Direction=mecanum[2], Rotation_Speed=80)
+    if mecanum[3] != -1: RR.Rotation(Direction=mecanum[3], Rotation_Speed=80)
     # stop
-    if mecanum[0] == -1: FL.rotation(Direction=mecanum[0], Rotation_Speed=0)
-    if mecanum[1] == -1: FR.rotation(Direction=mecanum[1], Rotation_Speed=0)
-    if mecanum[2] == -1: RL.rotation(Direction=mecanum[2], Rotation_Speed=0)
-    if mecanum[3] == -1: RR.rotation(Direction=mecanum[3], Rotation_Speed=0)
+    if mecanum[0] == -1: FL.Rotation(Direction=mecanum[0], Rotation_Speed=0)
+    if mecanum[1] == -1: FR.Rotation(Direction=mecanum[1], Rotation_Speed=0)
+    if mecanum[2] == -1: RL.Rotation(Direction=mecanum[2], Rotation_Speed=0)
+    if mecanum[3] == -1: RR.Rotation(Direction=mecanum[3], Rotation_Speed=0)
 
 # Mecanum
-def set_mecanum_dir():
+def Mecanum():
     global mecanum
     if lock==1 and unlc==0:
         # lock
@@ -110,8 +110,8 @@ def set_mecanum_dir():
         print("{:6d}_Stp".format(count))
         mecanum = [-1, -1, -1, -1]
     
-    mecanum_forward()
-"""
+    Mecanum_forward()
+
 # main
 with open("/dev/input/js0", "rb") as f:
     while True:
@@ -170,4 +170,3 @@ with open("/dev/input/js0", "rb") as f:
             # debug
             # コード進行状況確認用
             count += 1
-"""

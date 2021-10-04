@@ -2,16 +2,16 @@
 from math import degrees, radians, sin, cos
 import numpy as np
 
-class Arms:
+class ARMS:
     def __init__(self, links, fst_angle, Div=100):
         # Unit of angles are 'Degree'
         # enter array, not ndarray
         self.links = np.array(links)                                    # each_length [len(3)]
-        self.fst_angle = self.degree_to_radian(fst_angle, True, True)   # [th1, th2, th3] ==> ndarray(Rads)
+        self.fst_angle = self.Degree_to_Radian(fst_angle, True, True)   # [th1, th2, th3] ==> ndarray(Rads)
         self.div = Div                                                  # consider_times
         self.prints = "time: {:3d}, th1: {:6.1f}, th2: {:6.1f}, th3: {:6.1f}, x: {:6.2f}, y: {:6.2f}, a: {:6.1f}"
 
-    def degree_to_radian(self, _array, Dir, Type):
+    def Degree_to_Radian(self, _array, Dir, Type):
         # if Deg ==> Rad  : True   # if Rad ==> Deg  : False
         # if Type==> Angle: True   # if Type==> place: False
         # return angle or place array
@@ -29,23 +29,23 @@ class Arms:
             _changed[2] = degrees(_changed[2])
         return _changed
 
-    def rad_to_sum_rad(self, _Rads):
+    def Rad_to_SumRad(self, _Rads):
         _array = np.empty(3)
         for _w in range(3):  _array[_w] = sum(_Rads[:_w+1])
         self.sum_angles = _array
     
-    def rad_to_place(self, _Rads):
-        self.rad_to_sum_rad(_Rads)
+    def Rad_to_Place(self, _Rads):
+        self.Rad_to_SumRad(_Rads)
         _x = self.links[0]*cos(self.sum_angles[0]) + self.links[1]*cos(self.sum_angles[1]) + self.links[2]*cos(self.sum_angles[2])
         _y = self.links[0]*sin(self.sum_angles[0]) + self.links[1]*sin(self.sum_angles[1]) + self.links[2]*sin(self.sum_angles[2])
         _a = self.sum_angles[2]
         return np.array([_x, _y, _a])
 
-    def setting(self, end_place):
+    def Setting(self, end_place):
         # goal
-        self.end_place = self.degree_to_radian(end_place, True, False)  # [x, y, a] ========> ndarray(Place)
+        self.end_place = self.Degree_to_Radian(end_place, True, False)  # [x, y, a] ========> ndarray(Place)
         # first_place
-        self.fst_place = self.rad_to_place(self.fst_angle)
+        self.fst_place = self.Rad_to_Place(self.fst_angle)
         # now_position
         self.place = self.fst_place
         self.angle = self.fst_angle
@@ -53,10 +53,7 @@ class Arms:
         self.det = self.end_place - self.fst_place
         self.sca = self.det / self.div
 
-    def moving(self):
-        # angles_trainsition (to return)
-        self.angles_trainsition = []
-
+    def Moving(self):
         for D in range(1, self.div+1, 1):
             # target_rads
             target = self.fst_place + self.sca*D
@@ -74,37 +71,25 @@ class Arms:
             inv_J = np.linalg.inv(J)
             det_angle = inv_J @ change_amount
             self.angle += det_angle
-            self.rad_to_sum_rad(self.angle)
+            self.Rad_to_SumRad(self.angle)
 
             # now_place
-            self.place = self.rad_to_place(self.angle)
+            self.place = self.Rad_to_Place(self.angle)
 
-            # radians_to_degree
-            _degs = self.degree_to_radian(self.angle, False, True)
-            _posi = self.degree_to_radian(self.place, False, False)
-            
-            # change_range -180 ~ 180
+            # print(move)
+            _degs = self.Degree_to_Radian(self.angle, False, True)
+            _posi = self.Degree_to_Radian(self.place, False, False)
             _degs_180 = []
             for _i in _degs:
                 if _i%360 <= 180: _degs_180.append(_i%360)
                 else:             _degs_180.append(_i%360-360)
-            
-            # append_to_return
-            self.angles_trainsition.append(_degs_180)
-
-            # print
             print(self.prints.format(D, _degs_180[0], _degs_180[1], _degs_180[2], _posi[0], _posi[1], _posi[2]%360))
-        
-        # list_to_NpData
-        self.angles_trainsition = np.array(self.angles_trainsition)
-
-        # reset_start_position
         self.first_angle = self.angle
 
 
 
 
-"""
+
 ############################################################# test #############################################################
 
 # link_setting
@@ -141,6 +126,3 @@ while True:
 
     # 計算を実行( .Moving()) ※引数はなし
     arms.Moving()
-
-    print(arms.angles_trainsition)
-"""
