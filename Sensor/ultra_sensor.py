@@ -3,7 +3,21 @@ import RPi.GPIO as GPIO
 import time
 
 class UltraSonicSensor:
-    #GPIO pin setup
+    """
+    超音波センサーのsenseのpin番号とreadのpin番号を保持するクラス
+
+    間違ってるかもしれない...
+    Parameters
+    ----------
+    sense_pin : int
+        trig(trigger)用のpin番号を保持する    
+
+    read_pin :
+        echo用のpin番号を保持する
+
+    
+    
+    """
     def __init__(self,sense_pin = 17,read_pin = 27):
         self.sense_pin = sense_pin
         self.read_pin = read_pin
