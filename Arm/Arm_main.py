@@ -89,18 +89,18 @@ class AutoArm:
 
     def get_draw_route(self):
         # consider_y_axis
-        area_height = abs(self.corner_xyz[0][1] - self.corner_xyz[1][1])
-        self.steps  = math.floor(area_height / self.PEN_WIDTH)
+        self.area_height = abs(self.corner_xyz[0][1]-self.corner_xyz[1][1])
+        self.separate    = math.floor(self.area_height / self.PEN_WIDTH)
 
         # consider_x_axis(first_route)
-        self.arm.Setting([self.corner_xyz[0][0], self.corner_xyz[0][2]])
-        self.arm.Moving()
+        self.arm.setting([self.corner_xyz[0][0], self.corner_xyz[0][2]])
+        self.arm.moving()
         self.angles_transition_first = self.deg_to_pulth(self.arm.angles_transition)
 
         # consider_x_axis(normal_route)
-        self.arm.Setting([self.corner_xyz[1][0], self.corner_xyz[1][2]])
-        self.arm.Moving()
-        self.angles_transition_normal =  self.deg_to_pulth(self.arm.angles_transition)
+        self.arm.setting([self.corner_xyz[1][0], self.corner_xyz[1][2]])
+        self.arm.moving()
+        self.angles_transition_normal = self.deg_to_pulth(self.arm.angles_transition)
 
     def select_route_x(self, mode, direction=-1):
         # mode       : fisrt_move = 0 / normal_mode = 1 / end_mode = 2

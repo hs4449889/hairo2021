@@ -90,13 +90,13 @@ class Arms:
                 else:             _degs_180.append(_i%360-360)
             
             # append_to_return
-            self.angles_trainsition.append(_degs_180)
+            self.angles_transition.append(_degs_180)
 
             # print
             print(self.prints.format(D, _degs_180[0], _degs_180[1], _degs_180[2], _posi[0], _posi[1], _posi[2]%360))
         
         # list_to_NpData
-        self.angles_trainsition = np.array(self.angles_trainsition)
+        self.angles_transition = np.array(self.angles_transition)
 
         # reset_start_position
         self.first_angle = self.angle
