@@ -31,32 +31,34 @@ import pigpio
 # auto_moving_arm_class
 class AutoArm:
     def __init__(self):
-        # settings
-        self.pi         = pigpio.pi()
-        self.arm        = arm_inverse.ARMS([400, 400, 100], [10, 160, -80])
-        self.corner_xyz = [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+        # setting_arms
+        self.link_length = [400, 400, 100]
+        self.first_angle = [10, 160, -80]
 
-        # arm_pins
-        self.angle_pin1 = 14
-        self.angle_pin2 = 15
-        self.angle_pin3 = 16
+        # setting_"O"rigin_"R"ealsense_vector
+        self.OR_VECTOR   = [0, -600, 0]
 
-        # arm_default_positions (O = camera)
-        self.default_x = 0
-        self.default_y = -200
-        self.default_z = 0
+        # setting_motor
+        self.angle_pins  = [14, 15, 16]
+        self.stepping_pin= [10, 11, 12, 13]
+        self.stepping    = stepping_motor.Stepping_Moter(
+            coil_0=self.stepping_pin[0],
+            coil_1=self.stepping_pin[1],
+            coil_2=self.stepping_pin[2],
+            coil_3=self.stepping_pin[3]
+        )
 
-        # must_adjust_Servo
-        self.PEN_WIDTH  = 20
-        self.MAX_PULTH  = 2500
-        self.MIN_PULTH  = 500
-
-        # stepping_motor
-        self.stepping   = stepping_motor.Stepping_Moter(coil_0=6, coil_1=13, coil_2=19, coil_3=26)
+        # setting_servo
+        self.MIN_PULTH   = 500
+        self.MAX_PULTH   = 2500
         
-        # must_adjust_Stepping
-        self.STEP_MM    = 16    # N_steps is needed to move 1mm.
-        self.ONE_PART   = self.PEN_WIDTH * self.STEP_MM
+        # setting_pen
+        self.PEN_WIDTH   = 20
+        self.STEP_PER_MM = 16
+
+        # setting_modules
+        self.pi     = pigpio.pi()
+        self.arm    = arm_inverse.Arms(self.link_length, self.first_angle)
 
     def deg_to_pulth(self, x):
         _pulths = (x+180)*(MAX-MIN)/360
