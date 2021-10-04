@@ -102,25 +102,24 @@ class AutoArm:
         self.arm.moving()
         self.angles_transition_normal = self.deg_to_pulth(self.arm.angles_transition)
 
-    def select_route_x(self, mode, direction=-1):
-        # mode       : fisrt_move = 0 / normal_mode = 1 / end_mode = 2
-        # direction  : left = 1       / right = 0
-
+    def moving_x_axis(self, sleep, mode):
         # set_route
         if   mode==0:
-            self.next_route = self.angles_transition_first
+            self.route_x = self.angles_transition_first
+        elif mode==1:
+            self.route_x = self.angles_transition_normal
         elif mode==2:
-            self.next_route = np.flipud(self.angles_transition_first)
-        elif direction==1:
-            self.next_route = self.angles_transition_normal
-        else:
-            self.next_route = np.flipud(self.angles_transition_normal)
+            self.route_x = np.flipud(self.angles_transition_normal)
+        elif mode==3:
+            self.route_x = np.flipud(self.angles_transition_first)
+        
+        # calculate_sleep_time
+        _sleep = sleep / self.route_x.shape[0]
 
-    def moving_x_axis(self, sleep=16):
-        sleep = sleep / self.next_route.shape[0]
-        for _i in self.next_route:
-            self.servo_moving(_i)
-            time.sleep(sleep)
+        # moving
+        for _pulth in self.route_x:
+            self.servo_moving(_pulth)
+            time.sleep(_sleep)
 
     def moving_y_axis(self, sleep, steps, direction=-1):
         # calcurate_sleep_time
