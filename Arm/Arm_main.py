@@ -128,30 +128,25 @@ class AutoArm:
         self.stepping.forward(_sleep, steps, direction)
 
     def auto_moving(self):
-        # consider_route
+        # consider_rute
         self.get_corner()
         self.get_draw_route()
 
         # get_first_position
-        stepping = (self.corner_xyz[0][1]-self.default_y)*self.STEP_MM
-        self.moving_y_axis(sleep=4, steps=stepping)
-        self.select_route_x(0)
-        self.moving_x_axis(8)
-        
+        self.steps = abs(self.corner_xyz[0][1]) * self.STEP_PER_MM
+        self.moving_y_axis(sleep=4, steps=self.steps, direction=0)
+        self.moving_x_axis(sleep=4, mode=0)
+
         # drawing
-        for _i in range(self.steps):
-            self.select_route_x(1, _i%2)
-            self.moving_x_axis()
-            if _i!=self.steps-1:
-                self.moving_y_axis(sleep=0.5, steps=self.ONE_PART, direction=1)
+        for _i in range(self.separate):
+            self.moving_x_axis(sleep=8, mode=_i%2+1)
+            if _i!=self.separate-1:
+                self.moving_y_axis(sleep=0.5, steps=self.PEN_WIDTH*self.STEP_PER_MM)
         
         # return_position_x
-        if self.steps%2!=0:
-            self.select_route_x(1, 1)
-            self.moving_x_axis()
+        if self.separate%2 != 0:
+            self.moving_x_axis(sleep=8, mode=2)
         
         # return_first_position
-        stepping = (self.corner_xyz[0][1] - self.default_y + (self.steps-1)*self.PEN_WIDTH) * self.STEP_MM
-        self.select_route_x(2)
-        self.moving_x_axis(8)
-        self.moving_y_axis(sleep=4, steps=stepping)
+        self.moving_x_axis(sleep=4, mode=3)
+        self.moving_y_axis(sleep=4, steps=abs(self.corner_xyz[1][1]), direction=0)
