@@ -16,151 +16,174 @@ class Ps4:
     def __init__(self):
         pass
     
-    #図形ボタン4つ
-    def maru_button_pushed(self):
-        
-        #条件
-        if index == 1 and code ==2 :
-            judg = True
-        return judg
 
     def batu_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 1 and code == 1 and index == 0 :
             judg = True
         return judg
+
+    def maru_button_pushed(self):
+        #条件
+        judg = False
+        if value == 1 and code == 1 and index == 1 :
+            judg = True
+        return judg
+
     def sankaku_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 1 and code == 1 and index == 2 :
             judg = True
         return judg
+
+
     def shikaku_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 1 and code == 1 and index == 3:
             judg = True
         return judg
 
-    #矢印ボタン4つ
+
+
     def right_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
-            judg = True
-        return judg
-    def left_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
-            judg = True
-        return judg
-    def up_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
-            judg = True
-        return judg
-    def down_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 32767 and code == 2 and index == 6 :
             judg = True
         return judg
 
-    #R1,R2
-    def R1_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+
+    def left_button_pushed(self):
+        judg = False
+        if value == -32767 and code == 2 and index == 6 :
             judg = True
         return judg
+
+    def down_button_pushed(self):
+        judg = False
+        if value == 32767 and code == 2 and index == 7 :
+            judg = True
+        return judg
+
+    def up_button_pushed(self):
+        judg = False
+        if value == -32767 and code == 2 and index == 7 :
+            judg = True
+        return judg
+
+
+
+    def R1_button_pushed(self):
+        judg = False
+        if value == 1 and code == 1 and index == 5 :
+            judg = True
+        return judg
+
 
     def L1_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 1 and code == 1 and index == 4 :
             judg = True
         return judg
 
-    #その他
+
+
     def share_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 1 and code == 1 and index == 8 :
             judg = True
         return judg
 
     def options_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 1 and code == 1 and index == 9 :
             judg = True
         return judg
 
     def home_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
-            judg = True
-            return judg
-
-    def leverL_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 1 and code == 1 and index == 10 :
             judg = True
         return judg
 
-    #LeverL
+    #値が正確にわからないので一旦保留
+    """    
+    def leverL_button_pushed(self):
+        judg = False
+        if value == 32767 and code == 2 and index == 6 :
+            judg = True
+        return judg
+
+    def leverR_button_pushed(self):
+        judg = False
+        if value == 32767 and code == 2 and index == 6 :
+            judg = True
+        return judg
+    """
+
+
     def leverL_right_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 32767 and code == 2 and index == 1 :
             judg = True
         return judg
 
     def leverL_left_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == -32767 and code == 2 and index == 0 :
             judg = True
         return judg
-    
+  
     def leverL_up_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == -32767 and code == 2 and index == 1 :
             judg = True
         return judg
 
+    #ここ0でいいんだよな?
     def leverL_down_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 32767 and code == 2 and index == 0 :
             judg = True
         return judg
+  
 
-    #LeverR
     def leverR_right_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 32767 and code == 2 and index == 4 :
             judg = True
         return judg
 
     def leverR_left_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == -32767 and code == 2 and index == 3 :
             judg = True
         return judg
-
+  
     def leverR_up_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == -32767 and code == 2 and index == 4 :
             judg = True
         return judg
-
+        
     def leverR_down_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 32767 and code == 2 and index == 3:
             judg = True
         return judg
+  
+    
     
     #R2,L2
-
     def R2_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 32767 and code == 2 and index == 2:
             judg = True
         return judg
+  
 
     def L2_button_pushed(self):
-        #条件
-        if index == 1 and code ==2 :
+        judg = False
+        if value == 32767 and code == 2 and index == 5:
             judg = True
         return judg
-
+  
