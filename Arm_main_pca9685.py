@@ -14,8 +14,8 @@
 #  (11) (2)を逆からFor文で回し、反対の動きで初期位置に戻る
 
 # import_original
-import arm_inverse
-import realsense
+from Arm import arm_inverse
+from Arm import realsense
 from Motor import stepping_motor
 
 # import_default
