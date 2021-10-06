@@ -50,7 +50,7 @@ class AutoArm:
 
         # setting_servo
         self.MIN_PULTH   = 150
-        self.MAX_PULTH   = 500
+        self.MAX_PULTH   = 650
         
         # setting_pen
         self.PEN_WIDTH   = 20
@@ -66,7 +66,8 @@ class AutoArm:
 
     def servo_moving(self, pulths):
         for _x, _pulth in enumerate(pulths):
-            self.pi.set_pwm(_x, 0, _pulth)
+            print("{:1d}, {:4d}".format(int(_pulth)))
+            self.pi.set_pwm(_x, 0, int(_pulth))
 
     def get_corner(self):
         # setting_realsense
@@ -135,19 +136,29 @@ class AutoArm:
 
     def auto_moving(self):
         # consider_rute
+        print("Considering_Route")
         self.get_corner()
         self.get_draw_route()
 
         # get_first_position
+        print("\nMove_to_first_position")
         self.steps = abs(self.corner_xyz[0][1]) * self.STEP_PER_MM
+        print("Y_axis")
         self.moving_y_axis(sleep=4, steps=self.steps, direction=0)
+        time.sleep(1)
+        print("X_axis")
         self.moving_x_axis(sleep=4, mode=0)
+        time.sleep(1)
 
         # drawing
         for _i in range(self.separate):
+            print("\nDraw_X_axis_{:02d}".format(_i))
             self.moving_x_axis(sleep=8, mode=_i%2+1)
+            time.sleep(1)
             if _i!=self.separate-1:
+                print("\nDraw_Y_axis_{:02d}".format(_i))
                 self.moving_y_axis(sleep=0.5, steps=self.PEN_WIDTH*self.STEP_PER_MM)
+                time.sleep(1)
         
         # return_position_x
         if self.separate%2 != 0:
