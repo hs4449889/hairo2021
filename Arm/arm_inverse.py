@@ -55,7 +55,7 @@ class Arms:
 
     def moving(self):
         # angles_trainsition (to return)
-        self.angles_trainsition = []
+        self.angles_transition = []
 
         for D in range(1, self.div+1, 1):
             # target_rads

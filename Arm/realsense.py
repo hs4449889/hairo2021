@@ -9,6 +9,9 @@ class RealSense:
         self.frame_size = frame_size
         self.frame_rate = frame_rate
 
+        # set_depth
+        self.depth = 0
+
         # Configre
         self.pipeline = rs.pipeline()
         self.config = rs.config()
@@ -66,16 +69,18 @@ class RealSense:
             self.color_colormap_dim = self.color_image.shape
             self.color_intrinsics = self.color_frame.profile.as_video_stream_profile().intrinsics
 
+            '''
             # If depth and color resolutions are different, resize color image to match depth image for display
             if self.depth_colormap_dim != self.color_colormap_dim:
                 self.resized_color_image = cv2.resize(self.color_image, dsize=(self.depth_colormap_dim[1], self.depth_colormap_dim[0]), interpolation=cv2.INTER_AREA)
                 self.images = np.hstack((self.resized_color_image, self.depth_colormap))
             else:
                 self.images = np.hstack((self.color_image, self.depth_colormap))
+            '''
 
             # Show images
             cv2.namedWindow('RealSense', cv2.WINDOW_AUTOSIZE)
-            cv2.imshow('RealSense', self.images)
+            cv2.imshow('RealSense', self.color_image)
             cv2.setMouseCallback('RealSense', self.on_mouse)
             cv2.waitKey(1)
         except ZeroDivisionError:

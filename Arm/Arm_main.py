@@ -49,8 +49,8 @@ class AutoArm:
         )
 
         # setting_servo
-        self.MIN_PULTH   = 500
-        self.MAX_PULTH   = 2500
+        self.MIN_PULTH   = 150
+        self.MAX_PULTH   = 500
         
         # setting_pen
         self.PEN_WIDTH   = 20
@@ -61,11 +61,11 @@ class AutoArm:
         self.arm    = arm_inverse.Arms(self.link_length, self.first_angle)
 
     def deg_to_pulth(self, x):
-        return (x+180)*(self.MAX_PULTH-self.MIN_PULTH)/360
+        return (x+180)*(self.MAX_PULTH-self.MIN_PULTH)/360 + self.MIN_PULTH + self.MIN_PULTH
 
     def servo_moving(self, pulths):
         for _x, _pulth in enumerate(pulths):
-            self.pi.set_servo_pulthwidth(self.angle_pins[_x], _pulth)
+            self.pi.set_servo_pulsewidth(self.angle_pins[_x], _pulth)
 
     def get_corner(self):
         # setting_realsense
@@ -78,10 +78,15 @@ class AutoArm:
             # take_picture
             self.realsense.get_frame()
             # return_position
-            if realsense.depth != 0:
-                self.corner_xyz[_count][0] += realsense.world_point[0] * 1000
-                self.corner_xyz[_count][1] += realsense.world_point[1] * 1000
-                self.corner_xyz[_count][2] += realsense.depth * 1000
+            if self.realsense.depth != 0:
+                self.corner_xyz[_count][0] += self.realsense.world_point[0] * 1000
+                self.corner_xyz[_count][1] += self.realsense.world_point[1] * 1000
+                self.corner_xyz[_count][2] += self.realsense.depth * 1000
+                print("RealSense_World >>> X: {:5.1f}mm, Y: {:5.1f}mm, Z: {:5.1f}mm".format(
+                    self.corner_xyz[_count][0],
+                    self.corner_xyz[_count][1],
+                    self.corner_xyz[_count][2]
+                ))
                 _count += 1
         
         # stop_taking_picture
@@ -93,12 +98,12 @@ class AutoArm:
         self.separate    = math.floor(self.area_height / self.PEN_WIDTH)
 
         # consider_x_axis(first_route)
-        self.arm.setting([self.corner_xyz[0][0], self.corner_xyz[0][2]])
+        self.arm.setting([self.corner_xyz[0][0], self.corner_xyz[0][2], 90])
         self.arm.moving()
         self.angles_transition_first = self.deg_to_pulth(self.arm.angles_transition)
 
         # consider_x_axis(normal_route)
-        self.arm.setting([self.corner_xyz[1][0], self.corner_xyz[1][2]])
+        self.arm.setting([self.corner_xyz[1][0], self.corner_xyz[1][2], 90])
         self.arm.moving()
         self.angles_transition_normal = self.deg_to_pulth(self.arm.angles_transition)
 
