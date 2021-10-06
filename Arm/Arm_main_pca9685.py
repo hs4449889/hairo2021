@@ -22,7 +22,7 @@ from Motor import stepping_motor
 import time
 import math
 import numpy as np
-import pigpio
+import Adafruit_PCA9685
 
 # unit
 #   angle  = degree
@@ -39,7 +39,7 @@ class AutoArm:
         self.OR_VECTOR   = [0, -600, 0]
 
         # setting_motor
-        self.angle_pins  = [14, 15, 16]
+        #self.angle_pins  = [14, 15, 16]
         self.stepping_pin= [10, 11, 12, 13]
         self.stepping    = stepping_motor.Stepping_Moter(
             coil_0=self.stepping_pin[0],
@@ -49,23 +49,24 @@ class AutoArm:
         )
 
         # setting_servo
-        self.MIN_PULTH   = 500
-        self.MAX_PULTH   = 2500
+        self.MIN_PULTH   = 150
+        self.MAX_PULTH   = 500
         
         # setting_pen
         self.PEN_WIDTH   = 20
         self.STEP_PER_MM = 16
 
         # setting_modules
-        self.pi     = pigpio.pi()
         self.arm    = arm_inverse.Arms(self.link_length, self.first_angle)
+        self.pi     = Adafruit_PCA9685.PCA9685()
+        self.pi.set_pwm_freq(60)
 
     def deg_to_pulth(self, x):
         return (x+180)*(self.MAX_PULTH-self.MIN_PULTH)/360 + self.MIN_PULTH
 
     def servo_moving(self, pulths):
         for _x, _pulth in enumerate(pulths):
-            self.pi.set_servo_pulsewidth(self.angle_pins[_x], _pulth)
+            self.pi.set_pwm(_x, 0, _pulth)
 
     def get_corner(self):
         # setting_realsense
