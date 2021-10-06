@@ -27,6 +27,26 @@ class MecanumManager(object):
 
         self.specify_motion = [-1,-1,-1,-1]
 
+    #呼び出している間mecanumを回し続ける
+    def mecanum_forward(self):
+        if self.specify_motion[0] != -1: self.front_left.rotation(Direction=self.specify_motion[0], Rotation_Speed=80)
+        if self.specify_motion[1] != -1: self.front_right.rotation(Direction=self.specify_motion[1], Rotation_Speed=80)
+        if self.specify_motion[2] != -1: self.rear_left.rotation(Direction=self.specify_motion[2], Rotation_Speed=80)
+        if self.specify_motion[3] != -1: self.rear_right.rotation(Direction=self.specify_motion[3], Rotation_Speed=80)
+
+
+    def left_translation(self):
+    def right_translation(self):
+    def up_translation(self):
+    def down_translation(self):
+
+    def left_turn(self):
+    def right_turn(self):
+
+    def stop(self):
+
+
+
 
 
 
