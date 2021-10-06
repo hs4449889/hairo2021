@@ -156,3 +156,6 @@ class AutoArm:
         # return_first_position
         self.moving_x_axis(sleep=4, mode=3)
         self.moving_y_axis(sleep=4, steps=abs(self.corner_xyz[1][1]), direction=0)
+
+Test_arm = AutoArm()
+Test_arm.auto_moving()
