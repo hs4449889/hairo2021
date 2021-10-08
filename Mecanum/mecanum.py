@@ -26,7 +26,7 @@ class MecanumManager(object):
         self.rear_left   = dc_motor.DcMotor(pwm_pin = rear_left["pwm_pin"],dir_pin= rear_left["dir_pin"])
         self.rear_right  = dc_motor.DcMotor(pwm_pin = rear_right["pwm_pin"],dir_pin= rear_right["dir_pin"])
 
-        self.specify_motion = [-1,-1,-1,-1]
+        self.specify_motion = [-1 ,-1 ,-1 ,-1 ]
 
     #呼び出している間mecanumを回し続ける
     def mecanum_forward(self):
@@ -44,26 +44,26 @@ class MecanumManager(object):
 
     #値設定は後回しで
     def left_translation(self):
-        self.specify_motion[0,1,1,0]
+        self.specify_motion[ 0 , 1 , 1 , 0 ]
 
     def right_translation(self):
-        self.specify_motion[1,0,0,1]
+        self.specify_motion[ 1 , 0 , 0 , 1 ]
 
     def up_translation(self):
-        self.specify_motion[1,1,1,1]
+        self.specify_motion[ 1 , 1 , 1 , 1 ]
 
     def down_translation(self):
-        self.specify_motion[0,0,0,0]
+        self.specify_motion[ 0 , 0 , 0 , 0 ]
 
 
     def left_turn(self):
-        self.specify_motion[-1,1,1,-1]
+        self.specify_motion[-1 , 1 , 1 ,-1 ]
 
     def right_turn(self):
-        self.specify_motion[-1,0,0,-1]
+        self.specify_motion[-1 , 0 , 0 ,-1 ]
 
     def stop(self):
-        self.specify_motion[-1,-1,-1,-1]
+        self.specify_motion[-1 ,-1 ,-1 ,-1 ]
 
 
 
