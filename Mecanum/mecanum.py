@@ -44,23 +44,23 @@ class MecanumManager(object):
 
     #値設定は後回しで
     def left_translation(self):
-        self.specify_motion[,,,]
+        self.specify_motion[0,1,1,0]
 
     def right_translation(self):
-        self.specify_motion[,,,]
+        self.specify_motion[1,0,0,1]
 
     def up_translation(self):
-        self.specify_motion[,,,]
+        self.specify_motion[1,1,1,1]
 
     def down_translation(self):
-        self.specify_motion[,,,]
+        self.specify_motion[0,0,0,0]
 
 
     def left_turn(self):
-        self.specify_motion[,,,]
+        self.specify_motion[-1,1,1,-1]
 
     def right_turn(self):
-        self.specify_motion[,,,]
+        self.specify_motion[-1,0,0,-1]
 
     def stop(self):
         self.specify_motion[-1,-1,-1,-1]
