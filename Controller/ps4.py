@@ -13,33 +13,35 @@ class Ps4:
     
     注意：上記の理由により説明を省略する
     """
-    def __init__(self):
-        pass
+    def __init__(self,index,code,value,):
+        self.botton_index = index 
+        self.botton_code = code
+        self.botton_value = value
     
 
     def batu_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 0 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 0 :
             judg = True
         return judg
 
     def maru_button_pushed(self):
-        #条件
+        
         judg = False
-        if value == 1 and code == 1 and index == 1 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 1 :
             judg = True
         return judg
 
     def sankaku_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 2 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 2 :
             judg = True
         return judg
 
 
     def shikaku_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 3:
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 3:
             judg = True
         return judg
 
@@ -47,26 +49,26 @@ class Ps4:
 
     def right_button_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 6 :
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 6 :
             judg = True
         return judg
 
 
     def left_button_pushed(self):
         judg = False
-        if value == -32767 and code == 2 and index == 6 :
+        if self.botton_value == -32767 and self.botton_code == 2 and self.botton_index == 6 :
             judg = True
         return judg
 
     def down_button_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 7 :
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 7 :
             judg = True
         return judg
 
     def up_button_pushed(self):
         judg = False
-        if value == -32767 and code == 2 and index == 7 :
+        if self.botton_value == -32767 and self.botton_code == 2 and self.botton_index == 7 :
             judg = True
         return judg
 
@@ -74,14 +76,14 @@ class Ps4:
 
     def R1_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 5 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 5 :
             judg = True
         return judg
 
 
     def L1_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 4 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 4 :
             judg = True
         return judg
 
@@ -89,19 +91,19 @@ class Ps4:
 
     def share_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 8 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 8 :
             judg = True
         return judg
 
     def options_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 9 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 9 :
             judg = True
         return judg
 
     def home_button_pushed(self):
         judg = False
-        if value == 1 and code == 1 and index == 10 :
+        if self.botton_value == 1 and self.botton_code == 1 and self.botton_index == 10 :
             judg = True
         return judg
 
@@ -109,13 +111,13 @@ class Ps4:
     """    
     def leverL_button_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 6 :
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 6 :
             judg = True
         return judg
 
     def leverR_button_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 6 :
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 6 :
             judg = True
         return judg
     """
@@ -123,51 +125,51 @@ class Ps4:
 
     def leverL_right_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 1 :
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 1 :
             judg = True
         return judg
 
     def leverL_left_pushed(self):
         judg = False
-        if value == -32767 and code == 2 and index == 0 :
+        if self.botton_value == -32767 and self.botton_code == 2 and self.botton_index == 0 :
             judg = True
         return judg
   
     def leverL_up_pushed(self):
         judg = False
-        if value == -32767 and code == 2 and index == 1 :
+        if self.botton_value == -32767 and self.botton_code == 2 and self.botton_index == 1 :
             judg = True
         return judg
 
     #ここ0でいいんだよな?
     def leverL_down_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 0 :
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 0 :
             judg = True
         return judg
   
 
     def leverR_right_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 4 :
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 4 :
             judg = True
         return judg
 
     def leverR_left_pushed(self):
         judg = False
-        if value == -32767 and code == 2 and index == 3 :
+        if self.botton_value == -32767 and self.botton_code == 2 and self.botton_index == 3 :
             judg = True
         return judg
   
     def leverR_up_pushed(self):
         judg = False
-        if value == -32767 and code == 2 and index == 4 :
+        if self.botton_value == -32767 and self.botton_code == 2 and self.botton_index == 4 :
             judg = True
         return judg
         
     def leverR_down_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 3:
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 3:
             judg = True
         return judg
   
@@ -176,14 +178,14 @@ class Ps4:
     #R2,L2
     def R2_button_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 2:
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 2:
             judg = True
         return judg
   
 
     def L2_button_pushed(self):
         judg = False
-        if value == 32767 and code == 2 and index == 5:
+        if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 5:
             judg = True
         return judg
   
