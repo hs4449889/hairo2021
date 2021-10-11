@@ -66,7 +66,7 @@ class AutoArm:
 
     def servo_moving(self, pulths):
         for _x, _pulth in enumerate(pulths):
-            print("{:1d}, {:4d}".format(int(_pulth)))
+            print("{:1d}, {:4d}".format(_x, int(_pulth)))
             self.pi.set_pwm(_x, 0, int(_pulth))
 
     def get_corner(self):

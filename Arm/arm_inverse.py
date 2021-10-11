@@ -104,14 +104,14 @@ class Arms:
 
 
 
-"""
+
 ############################################################# test #############################################################
 
 # link_setting
 # args = [ アームの長さ[leg1, leg2, leg3], 各関節の角度(初期値)[theta1, theta2, theta3], 分割回数]
 #   ※アームの長さ、関節の角度は、支点に近い方から列挙する。
 #   ※分割回数は細かいほど正確に動く(はず)
-arms = ARMS([1.0, 1.0, 1.0], [80, -160, 170], 32)
+arms = Arms([1, 1, 1], [80, -160, 170], 100)
 
 # 動きの流れ
 #   (1)初期値設定：アームの形と初めの位置がわかる
@@ -137,10 +137,9 @@ while True:
 
     # 目的地設定 ( .Setting('args'))
     # args = 目的地情報[x座標, y座標, 手先角度]
-    arms.Setting([x, y, a])
+    arms.setting([x, y, a])
 
     # 計算を実行( .Moving()) ※引数はなし
-    arms.Moving()
+    arms.moving()
 
-    print(arms.angles_trainsition)
-"""
+    print(arms.angles_transition)
