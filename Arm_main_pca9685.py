@@ -84,7 +84,7 @@ class AutoArm:
                 self.corner_xyz[_count][0] += self.realsense.world_point[0] * 1000
                 self.corner_xyz[_count][1] += self.realsense.world_point[1] * 1000
                 self.corner_xyz[_count][2] += self.realsense.depth * 1000
-                print("RealSense_World >>> X: {:5.1f}mm, Y: {:5.1f}mm, Z: {:5.1f}mm".format(
+                print("RealSense_World >>> X: {:7.1f}mm, Y: {:7.1f}mm, Z: {:7.1f}mm".format(
                     self.corner_xyz[_count][0],
                     self.corner_xyz[_count][1],
                     self.corner_xyz[_count][2]

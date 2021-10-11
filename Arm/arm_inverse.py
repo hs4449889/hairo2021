@@ -9,7 +9,7 @@ class Arms:
         self.links = np.array(links)                                    # each_length [len(3)]
         self.fst_angle = self.degree_to_radian(fst_angle, True, True)   # [th1, th2, th3] ==> ndarray(Rads)
         self.div = Div                                                  # consider_times
-        self.prints = "time: {:3d}, th1: {:6.1f}, th2: {:6.1f}, th3: {:6.1f}, x: {:6.2f}, y: {:6.2f}, a: {:6.1f}"
+        self.prints = "time: {:3d}, th1: {:7.1f}, th2: {:7.1f}, th3: {:7.1f}, x: {:7.2f}, y: {:7.2f}, a: {:7.1f}"
 
     def degree_to_radian(self, _array, Dir, Type):
         # if Deg ==> Rad  : True   # if Rad ==> Deg  : False
