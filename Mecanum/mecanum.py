@@ -16,10 +16,10 @@ class MecanumManager(object):
     #// to do //配列にまとめるかどうか相談
     #最終的に辞書を採用(配列は可読性が低い)
     def __init__(self,
-            front_left  = {"pwm_pin":1,"dir_pin":1},
-            front_right = {"pwm_pin":1,"dir_pin":1},
-            rear_left   = {"pwm_pin":1,"dir_pin":1},
-            rear_right  = {"pwm_pin":1,"dir_pin":1} ):
+            front_left  = {"pwm_pin":3,"dir_pin":4},
+            front_right = {"pwm_pin":15,"dir_pin":14},
+            rear_left   = {"pwm_pin":18,"dir_pin":23},
+            rear_right  = {"pwm_pin":24,"dir_pin":25} ):
         
         self.front_left  = dc_motor.DcMotor(pwm_pin = front_left["pwm_pin"],dir_pin= front_left["dir_pin"])
         self.front_right = dc_motor.DcMotor(pwm_pin = front_right["pwm_pin"],dir_pin= front_right["dir_pin"])
