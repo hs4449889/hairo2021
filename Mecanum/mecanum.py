@@ -68,7 +68,10 @@ class MecanumManager(object):
 
 import time
 def mecanum_test():
-    mecanum = MecanumManager()
+    mecanum = MecanumManager(front_left  = {"pwm_pin":3,"dir_pin":4},
+                            front_right = {"pwm_pin":15,"dir_pin":14},
+                            rear_left   = {"pwm_pin":18,"dir_pin":23},
+                            rear_right  = {"pwm_pin":24,"dir_pin":25})
     print("==========    START    ==========")
     time.sleep(1)
 
