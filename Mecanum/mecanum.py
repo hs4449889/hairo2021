@@ -16,10 +16,10 @@ class MecanumManager(object):
     #// to do //配列にまとめるかどうか相談
     #最終的に辞書を採用(配列は可読性が低い)
     def __init__(self,
-            front_left  = {"pwm_pin":1,"dir_pin":1},
-            front_right = {"pwm_pin":1,"dir_pin":1},
-            rear_left   = {"pwm_pin":1,"dir_pin":1},
-            rear_right  = {"pwm_pin":1,"dir_pin":1} ):
+            front_left  = {"pwm_pin":3,"dir_pin":4},
+            front_right = {"pwm_pin":15,"dir_pin":14},
+            rear_left   = {"pwm_pin":18,"dir_pin":23},
+            rear_right  = {"pwm_pin":24,"dir_pin":25} ):
         
         self.front_left  = dc_motor.DcMotor(pwm_pin = front_left["pwm_pin"],dir_pin= front_left["dir_pin"])
         self.front_right = dc_motor.DcMotor(pwm_pin = front_right["pwm_pin"],dir_pin= front_right["dir_pin"])
@@ -66,9 +66,50 @@ class MecanumManager(object):
         self.specify_motion = [-1 ,-1 ,-1 ,-1 ]
 
 
+import time
+def mecanum_test():
+    mecanum = MecanumManager(front_left  = {"pwm_pin":3,"dir_pin":4},
+                            front_right = {"pwm_pin":15,"dir_pin":14},
+                            rear_left   = {"pwm_pin":18,"dir_pin":23},
+                            rear_right  = {"pwm_pin":24,"dir_pin":25})
+    print("==========    START    ==========")
+    time.sleep(1)
 
+    print("==========    LEFT    ==========")
+    mecanum.left_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
 
+    print("==========    RIGHT    ==========")
+    mecanum.right_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
 
+    print("==========    UP    ==========")
+    mecanum.up_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
+
+    print("==========    DOWN    ==========")
+    mecanum.down_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
+
+    print("==========    TURN RIGHT    ==========")
+    mecanum.right_turn()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
+
+    print("==========    TURN LEFT    ==========")
+    mecanum.left_turn()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
 
 
 
