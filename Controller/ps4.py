@@ -185,4 +185,111 @@ class Ps4:
         if self.botton_value == 32767 and self.botton_code == 2 and self.botton_index == 5:
             judg = True
         return judg
-  
+
+
+#test
+import struct
+def ps4_reading():
+    data = f.read(8)
+    t , value , code , index = struct.unpack("<ihbb",data)
+    return t , value , code , index
+    
+def ps4_test():
+    with open("/dev/input/js0","rb") as f:
+        while True:
+            t, value , code , index = ps4_reading()
+            ps4 = Ps4(t,value,code,index)
+            if(ps4.maru_button_pushed):
+                print("controller : maru button pushed")
+
+            if(ps4.batu_button_pushed):
+                print("controller : batu button pushed")
+
+            if(ps4.sankaku_button_pushed):
+                print("controller : sankaku button pushed")
+
+            if(ps4.shikaku_button_pushed):
+                print("controller : shikaku button pushed")
+
+            if(ps4.maru_button_pushed):
+                print("controller : maru button pushed")
+
+            #全部作るのくっそだるいなこれ
+            if(ps4.left_button_pushed):
+                print("controller : left button pushed")
+
+            if(ps4.right_button_pushed):
+                print("controller : right button pushed")
+            
+            if(ps4.up_button_pushed):
+                print("controller : up button pushed")
+
+            if(ps4.down_button_pushed):
+                print("controller : down button pushed")
+
+
+            if(ps4.R1_button_pushed):
+                print("controller : R1 button pushed")
+
+            if(ps4.L1_button_pushed):
+                print("controller : L1 button pushed")
+
+
+            if(ps4.share_button_pushed):
+                print("controller : share button pushed")
+
+            if(ps4.options_button_pushed):
+                print("controller : options button pushed")
+
+            if(ps4.home_button_pushed):
+                print("controller : home button pushed")
+
+
+            if(ps4.leverL_right_pushed):
+                print("controller : leverL right pushed")
+
+            if(ps4.leverL_left_pushed):
+                print("controller : leverL left pushed")
+
+            if(ps4.leverL_up_pushed):
+                print("controller : leverL up pushed")
+
+            if(ps4.leverL_down_pushed):
+                print("controller : leverL down pushed")
+
+
+            if(ps4.leverR_right_pushed):
+                print("controller : LeverR right pushed")
+
+            if(ps4.leverR_left_pushed):
+                print("controller : LeverR left pushed")
+
+            if(ps4.leverR_up_pushed):
+                print("controller : LeverR up pushed")
+
+            if(ps4.leverR_down_pushed):
+                print("controller : LeverR down pushed")
+
+
+            if(ps4.L2_button_pushed):
+                print("controller : L2 button pushed")
+
+            if(ps4.R2_button_pushed):
+                print("controller : R2 button pushed")
+
+            """
+            if(ps4.leverL_button_pushed):
+                print("controller : maru button pushed")
+
+            if(ps4.leverR_button_pushed):
+                print("controller : maru button pushed")
+            """
+
+
+
+
+
+
+
+
+
