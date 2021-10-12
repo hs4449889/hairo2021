@@ -66,9 +66,47 @@ class MecanumManager(object):
         self.specify_motion = [-1 ,-1 ,-1 ,-1 ]
 
 
+import time
+def mecanum_test():
+    mecanum = MecanumManager()
+    print("==========    START    ==========")
+    time.sleep(1)
 
+    print("==========    LEFT    ==========")
+    mecanum.left_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
 
+    print("==========    RIGHT    ==========")
+    mecanum.right_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
 
+    print("==========    UP    ==========")
+    mecanum.up_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
+
+    print("==========    DOWN    ==========")
+    mecanum.down_translation()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
+
+    print("==========    TURN RIGHT    ==========")
+    mecanum.right_turn()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
+
+    print("==========    TURN LEFT    ==========")
+    mecanum.left_turn()
+    mecanum.mecanum_forward()
+    time.sleep(5)
+    mecanum.mecanum_stop()
 
 
 
