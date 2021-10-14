@@ -45,4 +45,8 @@ if __name__ == '__main__':
                 mecanum.left_turn()
                 mecanum.mecanum_forward()
 
+            else:
+                print("controller : nothing")
+                mecanum.stop()
+
 
