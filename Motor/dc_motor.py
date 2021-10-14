@@ -224,21 +224,26 @@ class DcMotor:
         for i in range(90,0,-1):
             self.pwm_pin.ChangeDutyCycle(sin_list)
 
+    def choose_direction(self,direction):
+        """
+        回す方向を指定する関数
+        Parameters
+        ----------
+        direction : bool
+            方向を指定するbool型変数(True = 正回転、False = 負の回転)
+        """
+        GPIO.output(self.dir_pin,direction)
 
-    def rotation(self,Direction = True,Rotation_Speed = 100):
+    def keep_rotation(self,direction = True,rotation_speed = 100):
         """
         DCモーターを回転させるための関数
 
         Parameters
         ----------
-        direction : int
-            方向を保持する変数(True = 正回転、False = 負の回転)
-
         rotation_speed : int
             ChangeDutyCycleの値を保持する変数(0 ~ 100)
         """
-        GPIO.output(self.dir_pin,Direction)
-        self.pwm_pin.ChangeDutyCycle(Rotation_Speed)
+        self.pwm_pin.ChangeDutyCycle(rotation_speed)
         
     def finish(self):
         """
