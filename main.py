@@ -6,13 +6,13 @@ def ps4_reading():
     data = f.read(8)
     t , value , code , index = struct.unpack("<ihbb",data)
     return t , value , code , index
-    
-#デフォ値運用
+
 mecanum = mecanum.MecanumManager()
 if __name__ == '__main__':
     with open("/dev/input/js0","rb") as f:
         while True:
-            ps4 = ps4.Ps4
+            t , value , code , index = ps4_reading() 
+            ps4 = ps4.Ps4(index,code,value)
             
             if(ps4.leverL_right_pushed):
                 print("controller : leverL right pushed")
@@ -44,7 +44,7 @@ if __name__ == '__main__':
                 print("controller : LeverR left pushed")
                 mecanum.left_turn()
                 mecanum.mecanum_forward()
-                
+
             else:
                 print("controller : nothing")
                 mecanum.stop()
