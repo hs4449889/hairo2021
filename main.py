@@ -19,28 +19,28 @@ if __name__ == '__main__':
                 mecanum.right_translation()
                 mecanum.mecanum_forward()
 
-            if(ps4.leverL_left_pushed):
+            elif(ps4.leverL_left_pushed):
                 print("controller : leverL left pushed")
                 mecanum.left_translation()
                 mecanum.mecanum_forward
 
-            if(ps4.leverL_up_pushed):
+            elif(ps4.leverL_up_pushed):
                 print("controller : leverL up pushed")
                 mecanum.up_translation()
                 mecanum.mecanum_forward()
 
-            if(ps4.leverL_down_pushed):
+            elif(ps4.leverL_down_pushed):
                 print("controller : leverL down pushed")
                 mecanum.down_translation()
                 mecanum.mecanum_forward()
 
 
-            if(ps4.leverR_right_pushed):
+            elif(ps4.leverR_right_pushed):
                 print("controller : LeverR right pushed")
                 mecanum.right_turn()
                 mecanum.mecanum_forward()
 
-            if(ps4.leverR_left_pushed):
+            elif(ps4.leverR_left_pushed):
                 print("controller : LeverR left pushed")
                 mecanum.left_turn()
                 mecanum.mecanum_forward()
