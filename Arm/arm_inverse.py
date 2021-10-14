@@ -9,7 +9,7 @@ class Arms:
         self.links = np.array(links)                                    # each_length [len(3)]
         self.fst_angle = self.degree_to_radian(fst_angle, True, True)   # [th1, th2, th3] ==> ndarray(Rads)
         self.div = Div                                                  # consider_times
-        self.prints = "time: {:3d}, th1: {:6.1f}, th2: {:6.1f}, th3: {:6.1f}, x: {:6.2f}, y: {:6.2f}, a: {:6.1f}"
+        self.prints = "time: {:3d}, th1: {:9.1f}, th2: {:9.1f}, th3: {:9.1f}, x: {:9.2f}, y: {:9.2f}, a: {:9.1f}"
 
     def degree_to_radian(self, _array, Dir, Type):
         # if Deg ==> Rad  : True   # if Rad ==> Deg  : False
@@ -54,8 +54,8 @@ class Arms:
         self.sca = self.det / self.div
 
     def moving(self):
-        # angles_trainsition (to return)
-        self.angles_trainsition = []
+        # angles_transition (to return)
+        self.angles_transition = []
 
         for D in range(1, self.div+1, 1):
             # target_rads
@@ -64,43 +64,41 @@ class Arms:
 
             # Yakobi
             J = np.zeros((3, 3))
-            for _i in range(3):
-                for _j in range(3-_i):
-                    J[0][_i] -= self.links[_j] * sin(self.sum_angles[_j])
-                    J[1][_i] += self.links[_j] * cos(self.sum_angles[_j])
-                J[2][_i] = 1
+            J[0][0] = -self.links[0] * sin(self.sum_angles[0]) -self.links[1] * sin(self.sum_angles[1]) -self.links[2] * sin(self.sum_angles[2])
+            J[0][1] = -self.links[1] * sin(self.sum_angles[1]) -self.links[2] * sin(self.sum_angles[2])
+            J[0][2] = -self.links[2] * sin(self.sum_angles[2])
+            J[1][0] =  self.links[0] * cos(self.sum_angles[0]) +self.links[1] * cos(self.sum_angles[1]) +self.links[2] * cos(self.sum_angles[2])
+            J[1][1] =  self.links[1] * cos(self.sum_angles[1]) +self.links[2] * cos(self.sum_angles[2])
+            J[1][2] =  self.links[2] * cos(self.sum_angles[2])
+            J[2][0] =  1
+            J[2][1] =  1
+            J[2][2] =  1
             
             # inverse_and_make_angle
             inv_J = np.linalg.inv(J)
             det_angle = inv_J @ change_amount
+            
             self.angle += det_angle
             self.rad_to_sum_rad(self.angle)
 
             # now_place
             self.place = self.rad_to_place(self.angle)
 
-            # radians_to_degree
+            # print(move)
             _degs = self.degree_to_radian(self.angle, False, True)
             _posi = self.degree_to_radian(self.place, False, False)
-            
-            # change_range -180 ~ 180
-            _degs_180 = []
-            for _i in _degs:
-                if _i%360 <= 180: _degs_180.append(_i%360)
-                else:             _degs_180.append(_i%360-360)
-            
-            # append_to_return
-            self.angles_transition.append(_degs_180)
+
+            # array
+            self.angles_transition.append(_degs)
 
             # print
-            print(self.prints.format(D, _degs_180[0], _degs_180[1], _degs_180[2], _posi[0], _posi[1], _posi[2]%360))
+            print(self.prints.format(D, _degs[0], _degs[1], _degs[2],  _posi[0], _posi[1], _posi[2]))
         
-        # list_to_NpData
+        # first_setting
+        self.fst_angle = self.angle
+
+        # make_numpy_array
         self.angles_transition = np.array(self.angles_transition)
-
-        # reset_start_position
-        self.first_angle = self.angle
-
 
 
 
@@ -111,7 +109,7 @@ class Arms:
 # args = [ アームの長さ[leg1, leg2, leg3], 各関節の角度(初期値)[theta1, theta2, theta3], 分割回数]
 #   ※アームの長さ、関節の角度は、支点に近い方から列挙する。
 #   ※分割回数は細かいほど正確に動く(はず)
-arms = ARMS([1.0, 1.0, 1.0], [80, -160, 170], 32)
+arms = Arms([400, 400, 100], [10, 160, -80], 32)
 
 # 動きの流れ
 #   (1)初期値設定：アームの形と初めの位置がわかる
@@ -137,10 +135,10 @@ while True:
 
     # 目的地設定 ( .Setting('args'))
     # args = 目的地情報[x座標, y座標, 手先角度]
-    arms.Setting([x, y, a])
+    arms.setting([x, y, a])
 
     # 計算を実行( .Moving()) ※引数はなし
-    arms.Moving()
+    arms.moving()
 
-    print(arms.angles_trainsition)
+    print(arms.angles_transition)
 """
