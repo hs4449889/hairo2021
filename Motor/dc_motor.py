@@ -54,3 +54,9 @@ class DcMotor:
         None
         """
         self.pwm_pin.stop()
+
+def test_module_DcMotor():
+    dc_motor = DcMotor(pwm_pin=19,dir_pin=26)
+
+
+
