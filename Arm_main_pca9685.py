@@ -14,15 +14,15 @@
 #  (11) (2)を逆からFor文で回し、反対の動きで初期位置に戻る
 
 # import_original
-import arm_inverse
-import realsense
+from Arm import arm_inverse
+from Arm import realsense
 from Motor import stepping_motor
 
 # import_default
 import time
 import math
 import numpy as np
-import pigpio
+import Adafruit_PCA9685
 
 # unit
 #   angle  = degree
@@ -39,7 +39,7 @@ class AutoArm:
         self.OR_VECTOR   = [0, -600, 0]
 
         # setting_motor
-        self.angle_pins  = [14, 15, 16]
+        #self.angle_pins  = [14, 15, 16]
         self.stepping_pin= [10, 11, 12, 13]
         self.stepping    = stepping_motor.Stepping_Moter(
             coil_0=self.stepping_pin[0],
@@ -49,23 +49,25 @@ class AutoArm:
         )
 
         # setting_servo
-        self.MIN_PULTH   = 500
-        self.MAX_PULTH   = 2500
+        self.MIN_PULTH   = 150
+        self.MAX_PULTH   = 650
         
         # setting_pen
         self.PEN_WIDTH   = 20
         self.STEP_PER_MM = 16
 
         # setting_modules
-        self.pi     = pigpio.pi()
         self.arm    = arm_inverse.Arms(self.link_length, self.first_angle)
+        self.pi     = Adafruit_PCA9685.PCA9685()
+        self.pi.set_pwm_freq(60)
 
     def deg_to_pulth(self, x):
-        return (x+180)*(self.MAX_PULTH-self.MIN_PULTH)/360
+        return (x+180)*(self.MAX_PULTH-self.MIN_PULTH)/360 + self.MIN_PULTH
 
     def servo_moving(self, pulths):
         for _x, _pulth in enumerate(pulths):
-            self.pi.set_servo_pulthwidth(self.angle_pins[_x], _pulth)
+            print("{:1d}, {:4d}".format(_x, int(_pulth)))
+            self.pi.set_pwm(_x, 0, int(_pulth))
 
     def get_corner(self):
         # setting_realsense
@@ -78,10 +80,15 @@ class AutoArm:
             # take_picture
             self.realsense.get_frame()
             # return_position
-            if realsense.depth != 0:
-                self.corner_xyz[_count][0] += realsense.world_point[0] * 1000
-                self.corner_xyz[_count][1] += realsense.world_point[1] * 1000
-                self.corner_xyz[_count][2] += realsense.depth * 1000
+            if self.realsense.depth != 0:
+                self.corner_xyz[_count][0] += self.realsense.world_point[0] * 1000
+                self.corner_xyz[_count][1] += self.realsense.world_point[1] * 1000
+                self.corner_xyz[_count][2] += self.realsense.depth * 1000
+                print("RealSense_World >>> X: {:7.1f}mm, Y: {:7.1f}mm, Z: {:7.1f}mm".format(
+                    self.corner_xyz[_count][0],
+                    self.corner_xyz[_count][1],
+                    self.corner_xyz[_count][2]
+                ))
                 _count += 1
         
         # stop_taking_picture
@@ -93,12 +100,12 @@ class AutoArm:
         self.separate    = math.floor(self.area_height / self.PEN_WIDTH)
 
         # consider_x_axis(first_route)
-        self.arm.setting([self.corner_xyz[0][0], self.corner_xyz[0][2]])
+        self.arm.setting([self.corner_xyz[0][0], self.corner_xyz[0][2], 90])
         self.arm.moving()
         self.angles_transition_first = self.deg_to_pulth(self.arm.angles_transition)
 
         # consider_x_axis(normal_route)
-        self.arm.setting([self.corner_xyz[1][0], self.corner_xyz[1][2]])
+        self.arm.setting([self.corner_xyz[1][0], self.corner_xyz[1][2], 90])
         self.arm.moving()
         self.angles_transition_normal = self.deg_to_pulth(self.arm.angles_transition)
 
@@ -129,19 +136,29 @@ class AutoArm:
 
     def auto_moving(self):
         # consider_rute
+        print("Considering_Route")
         self.get_corner()
         self.get_draw_route()
 
         # get_first_position
+        print("\nMove_to_first_position")
         self.steps = abs(self.corner_xyz[0][1]) * self.STEP_PER_MM
+        print("Y_axis")
         self.moving_y_axis(sleep=4, steps=self.steps, direction=0)
+        time.sleep(1)
+        print("X_axis")
         self.moving_x_axis(sleep=4, mode=0)
+        time.sleep(1)
 
         # drawing
         for _i in range(self.separate):
+            print("\nDraw_X_axis_{:02d}".format(_i))
             self.moving_x_axis(sleep=8, mode=_i%2+1)
+            time.sleep(1)
             if _i!=self.separate-1:
+                print("\nDraw_Y_axis_{:02d}".format(_i))
                 self.moving_y_axis(sleep=0.5, steps=self.PEN_WIDTH*self.STEP_PER_MM)
+                time.sleep(1)
         
         # return_position_x
         if self.separate%2 != 0:
@@ -150,3 +167,6 @@ class AutoArm:
         # return_first_position
         self.moving_x_axis(sleep=4, mode=3)
         self.moving_y_axis(sleep=4, steps=abs(self.corner_xyz[1][1]), direction=0)
+
+Test_arm = AutoArm()
+Test_arm.auto_moving()

@@ -9,7 +9,7 @@ class Arms:
         self.links = np.array(links)                                    # each_length [len(3)]
         self.fst_angle = self.degree_to_radian(fst_angle, True, True)   # [th1, th2, th3] ==> ndarray(Rads)
         self.div = Div                                                  # consider_times
-        self.prints = "time: {:3d}, th1: {:6.1f}, th2: {:6.1f}, th3: {:6.1f}, x: {:6.2f}, y: {:6.2f}, a: {:6.1f}"
+        self.prints = "time: {:3d}, th1: {:7.1f}, th2: {:7.1f}, th3: {:7.1f}, x: {:7.2f}, y: {:7.2f}, a: {:7.1f}"
 
     def degree_to_radian(self, _array, Dir, Type):
         # if Deg ==> Rad  : True   # if Rad ==> Deg  : False
@@ -55,7 +55,7 @@ class Arms:
 
     def moving(self):
         # angles_trainsition (to return)
-        self.angles_trainsition = []
+        self.angles_transition = []
 
         for D in range(1, self.div+1, 1):
             # target_rads
@@ -104,14 +104,14 @@ class Arms:
 
 
 
-"""
+
 ############################################################# test #############################################################
 
 # link_setting
 # args = [ アームの長さ[leg1, leg2, leg3], 各関節の角度(初期値)[theta1, theta2, theta3], 分割回数]
 #   ※アームの長さ、関節の角度は、支点に近い方から列挙する。
 #   ※分割回数は細かいほど正確に動く(はず)
-arms = ARMS([1.0, 1.0, 1.0], [80, -160, 170], 32)
+arms = Arms([1, 1, 1], [80, -160, 170], 100)
 
 # 動きの流れ
 #   (1)初期値設定：アームの形と初めの位置がわかる
@@ -137,10 +137,9 @@ while True:
 
     # 目的地設定 ( .Setting('args'))
     # args = 目的地情報[x座標, y座標, 手先角度]
-    arms.Setting([x, y, a])
+    arms.setting([x, y, a])
 
     # 計算を実行( .Moving()) ※引数はなし
-    arms.Moving()
+    arms.moving()
 
-    print(arms.angles_trainsition)
-"""
+    print(arms.angles_transition)
