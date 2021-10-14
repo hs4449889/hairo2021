@@ -44,9 +44,10 @@ if __name__ == '__main__':
                 print("controller : LeverR left pushed")
                 mecanum.left_turn()
                 mecanum.mecanum_forward()
-
+            """
             else:
                 print("controller : nothing")
                 mecanum.stop()
+            """
 
 
