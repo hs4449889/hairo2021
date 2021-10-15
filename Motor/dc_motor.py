@@ -175,5 +175,25 @@ class DcMotor:
 def test_module_DcMotor():
     dc_motor = DcMotor(pwm_pin=19,dir_pin=26,max_duty = 80)
 
+    print("========== START MOTOR TEST ==========")
+    print("========== ACCELERATE ==========")
+    dc_motor.accelerate()
+    while True:
+        try:
+            dc_motor.keep_rotation()
+            
+        except KeyboardInterrupt:
+            print("========== STOP MOTOR TEST ==========")
+            dc_motor.decelerate()
+            break
+        
+        finally:
+            pass
+
+
+        
+
+
+
 
 
