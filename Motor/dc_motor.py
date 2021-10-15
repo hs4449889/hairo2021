@@ -1,5 +1,5 @@
 # PWM Motor class
-import RPi.GPIO as GPIO
+import Jetson.GPIO as GPIO
 import numpy as np
 import time 
 

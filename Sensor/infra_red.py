@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+import Jetson.GPIO as GPIO
 #INFRA RED class 
 class InfraRedSensor:
     #GPIO pin setup
